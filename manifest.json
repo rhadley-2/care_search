@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "NetflixCare Search",
+  "version": "1.2",
+  "description": "Search NetflixCare with custom encoding and saved defaults.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "permissions": ["storage"],
+  "options_page": "options.html"
+}

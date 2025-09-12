@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>NetflixCare Search Settings</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --fg: #111418;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --input-bg: #f9fafb;
+        --accent: #e50914;
+      }
+      :root[data-theme="dark"] {
+        --bg: #0f1115;
+        --fg: #e5e7eb;
+        --muted: #9ca3af;
+        --border: #24272f;
+        --input-bg: #141821;
+        --accent: #ff3940;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root[data-theme="system"] {
+          --bg: #0f1115;
+          --fg: #e5e7eb;
+          --muted: #9ca3af;
+          --border: #24272f;
+          --input-bg: #141821;
+          --accent: #ff3940;
+        }
+      }
+      html, body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h2 { margin: 0 0 12px; }
+      .row { margin-bottom: 14px; }
+      label { display: block; font-weight: 600; margin-bottom: 6px; }
+      .hint { color: var(--muted); font-size: 12px; }
+      input[type="text"], select {
+        width: 100%;
+        box-sizing: border-box;
+        background: var(--input-bg);
+        color: var(--fg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+      .inline {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .btn {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn.secondary {
+        background: transparent;
+        color: var(--fg);
+        border: 1px solid var(--border);
+      }
+      .switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>NetflixCare Search Settings</h2>
+
+      <div class="row">
+        <label for="baseUrl">Base shared-view URL (optional)</label>
+        <input type="text" id="baseUrl" placeholder="Paste a shared-view URL to inherit its filters/sort" />
+        <div class="hint">
+          We’ll copy parameters from this URL (e.g., language/locale). Your search term will always override the “search” parameter.
+        </div>
+        <div class="inline" style="margin-top:8px;">
+          <button id="saveBtn" class="btn">Save</button>
+          <button id="resetDefaults" class="btn secondary">Reset to default (en_US)</button>
+          <span id="status" class="hint"></span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="inline">
+          <label class="switch"><input type="checkbox" id="keepFilters" /> Keep filters from base URL</label>
+          <label class="switch"><input type="checkbox" id="keepSort" /> Keep sort from base URL</label>
+          <label class="switch"><input type="checkbox" id="forceShareView" checked /> Force shareView=1</label>
+        </div>
+        <div class="hint">If you uncheck “Keep filters,” we’ll clear filters unless you toggle “Clean” only for a single search in the popup.</div>
+      </div>
+
+      <div class="row">
+        <label for="themeSelect">Theme</label>
+        <select id="themeSelect">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+        <div class="hint">Controls both the popup and this page.</div>
+      </div>
+    </div>
+
+    <script src="options.js"></script>
+  </body>
+</html>
