@@ -97,7 +97,7 @@ async function doSearch() {
   });
 
   // Required params
-  params.set('search', doubleEncode(input));
+  params.set('search', encodeURIComponent(input));
   if (forceShareView) params.set('shareView', '1');
 
   // Filters
