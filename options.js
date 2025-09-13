@@ -81,8 +81,12 @@ async function save() {
   await setSettings({ baseParams, keepFilters, keepSort, forceShareView, searchResultBehavior });
 
   const status = document.getElementById('status');
-  status.textContent = 'Saved';
-  setTimeout(() => (status.textContent = ''), 1200);
+  status.textContent = 'Settings Saved';
+  status.classList.add('show');
+  setTimeout(() => {
+    status.classList.remove('show');
+    setTimeout(() => (status.textContent = ''), 200);
+  }, 1200);
 }
 
 async function resetDefaults() {
@@ -95,8 +99,12 @@ async function resetDefaults() {
   });
   await restore();
   const status = document.getElementById('status');
-  status.textContent = 'Defaults restored';
-  setTimeout(() => (status.textContent = ''), 1200);
+  status.textContent = 'Defaults Restored';
+  status.classList.add('show');
+  setTimeout(() => {
+    status.classList.remove('show');
+    setTimeout(() => (status.textContent = ''), 200);
+  }, 1200);
 }
 
 async function onThemeChange(e) {

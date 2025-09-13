@@ -11,6 +11,13 @@
         --border: #e5e7eb;
         --input-bg: #f9fafb;
         --accent: #e50914;
+        --accent-hover: #c20811;
+        --card-bg: #ffffff;
+        --card-border: #f3f4f6;
+        --success: #22c55e;
+        --radius: 12px;
+        --radius-sm: 8px;
+        --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
       }
       :root[data-theme="dark"] {
         --bg: #0f1115;
@@ -19,6 +26,11 @@
         --border: #24272f;
         --input-bg: #141821;
         --accent: #ff3940;
+        --accent-hover: #e53e3e;
+        --card-bg: #1a1d24;
+        --card-border: #24272f;
+        --success: #10b981;
+        --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
       }
       @media (prefers-color-scheme: dark) {
         :root[data-theme="system"] {
@@ -28,27 +40,39 @@
           --border: #24272f;
           --input-bg: #141821;
           --accent: #ff3940;
+          --accent-hover: #e53e3e;
+          --card-bg: #1a1d24;
+          --card-border: #24272f;
+          --success: #10b981;
+          --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
         }
       }
+
       html, body {
         background: var(--bg);
         color: var(--fg);
         font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
         margin: 0;
         padding: 0;
+        line-height: 1.5;
       }
+
       .container {
-        max-width: 720px;
+        max-width: 800px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 24px;
+        min-height: 100vh;
       }
+
       h2 { 
-        margin: 0 0 12px; 
+        margin: 0 0 32px; 
         display: flex;
         align-items: center;
         gap: 12px;
-        font-size: 24px;
+        font-size: 28px;
+        font-weight: 700;
       }
+
       .settings-icon {
         width: 32px;
         height: 32px;
@@ -70,43 +94,230 @@
           display: block;
         }
       }
-      .row { margin-bottom: 14px; }
-      label { display: block; font-weight: 600; margin-bottom: 6px; }
-      .hint { color: var(--muted); font-size: 12px; }
+
+      .settings-section {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius);
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 20px 0;
+        color: var(--fg);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .section-title::before {
+        content: '';
+        width: 4px;
+        height: 20px;
+        background: var(--accent);
+        border-radius: 2px;
+      }
+
+      .settings-row {
+        margin-bottom: 20px;
+      }
+
+      .settings-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .form-group-horizontal {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .form-group-horizontal:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .form-group-horizontal .form-label {
+        margin: 0;
+        flex: 1;
+      }
+
+      label, .form-label {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--fg);
+        margin-bottom: 6px;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+        margin-top: 6px;
+      }
+
       input[type="text"], select {
         width: 100%;
         box-sizing: border-box;
         background: var(--input-bg);
         color: var(--fg);
         border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        padding: 12px 16px;
         font-size: 14px;
+        transition: border-color 0.2s, box-shadow 0.2s;
       }
-      .inline {
+
+      input[type="text"]:focus, select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgb(229 9 20 / 0.1);
+      }
+
+      :root[data-theme="dark"] input[type="text"]:focus,
+      :root[data-theme="dark"] select:focus {
+        box-shadow: 0 0 0 3px rgb(255 57 64 / 0.2);
+      }
+
+      select {
+        cursor: pointer;
+        min-width: 180px;
+      }
+
+      .form-group-horizontal select {
+        width: auto;
+        min-width: 140px;
+      }
+
+      .action-buttons {
         display: flex;
-        gap: 14px;
+        gap: 12px;
         align-items: center;
+        margin-top: 20px;
         flex-wrap: wrap;
       }
+
       .btn {
         background: var(--accent);
         color: #fff;
         border: none;
-        border-radius: 8px;
-        padding: 10px 14px;
+        border-radius: var(--radius-sm);
+        padding: 12px 20px;
         font-weight: 600;
+        font-size: 14px;
         cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
       }
+
+      .btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
       .btn.secondary {
         background: transparent;
         color: var(--fg);
         border: 1px solid var(--border);
       }
-      .switch {
-        display: inline-flex;
+
+      .btn.secondary:hover {
+        background: var(--input-bg);
+        border-color: var(--accent);
+      }
+
+      .status-message {
+        padding: 8px 12px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 500;
+        background: var(--success);
+        color: white;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .status-message.show {
+        opacity: 1;
+      }
+
+      .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .checkbox-item {
+        display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
+      }
+
+      .checkbox-item input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+        transform: scale(1.1);
+      }
+
+      .checkbox-item label {
+        margin: 0;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 16px;
+        }
+
+        .settings-section {
+          padding: 20px;
+          margin-bottom: 20px;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .form-group-horizontal {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 12px;
+        }
+
+        .form-group-horizontal select {
+          width: 100%;
+          min-width: auto;
+        }
+
+        h2 {
+          font-size: 24px;
+        }
       }
     </style>
   </head>
@@ -118,45 +329,82 @@
         NetflixCare Search Settings
       </h2>
 
-      <div class="row">
-        <label for="baseUrl">Base shared-view URL (optional)</label>
-        <input type="text" id="baseUrl" placeholder="Paste a shared-view URL to inherit its filters/sort" />
-        <div class="hint">
-          We’ll copy parameters from this URL (e.g., language/locale). Your search term will always override the “search” parameter.
+      <!-- URL Configuration Section -->
+      <div class="settings-section">
+        <h3 class="section-title">URL Configuration</h3>
+        
+        <div class="settings-row">
+          <div class="form-group">
+            <label for="baseUrl">Base shared-view URL (optional)</label>
+            <input type="text" id="baseUrl" placeholder="Paste a shared-view URL to inherit its filters/sort" />
+            <div class="hint">
+              We'll copy parameters from this URL (e.g., language/locale). Your search term will always override the "search" parameter.
+            </div>
+          </div>
         </div>
-        <div class="inline" style="margin-top:8px;">
-          <button id="saveBtn" class="btn">Save</button>
-          <button id="resetDefaults" class="btn secondary">Reset to default (en_US)</button>
-          <span id="status" class="hint"></span>
+
+        <div class="settings-row">
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <input type="checkbox" id="keepFilters" />
+              <label for="keepFilters">Keep filters from base URL</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="keepSort" />
+              <label for="keepSort">Keep sort from base URL</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="forceShareView" checked />
+              <label for="forceShareView">Force shareView=1</label>
+            </div>
+          </div>
+          <div class="hint">
+            If you uncheck "Keep filters," we'll clear filters unless you toggle "Remove Filters and Sorting" only for a single search in the popup.
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="saveBtn" class="btn">Save Settings</button>
+          <button id="resetDefaults" class="btn secondary">Reset to Default</button>
+          <span id="status" class="status-message"></span>
         </div>
       </div>
 
-      <div class="row">
-        <div class="inline">
-          <label class="switch"><input type="checkbox" id="keepFilters" /> Keep filters from base URL</label>
-          <label class="switch"><input type="checkbox" id="keepSort" /> Keep sort from base URL</label>
-          <label class="switch"><input type="checkbox" id="forceShareView" checked /> Force shareView=1</label>
+      <!-- Search Behavior Section -->
+      <div class="settings-section">
+        <h3 class="section-title">Search Behavior</h3>
+        
+        <div class="settings-row">
+          <div class="form-group-horizontal">
+            <div class="form-label">
+              <strong>Search Result Behavior</strong>
+              <div class="hint">Controls how search results open when clicking Search.</div>
+            </div>
+            <select id="searchResultBehavior">
+              <option value="newTab">Open in new tab</option>
+              <option value="currentTab">Open in current tab</option>
+            </select>
+          </div>
         </div>
-        <div class="hint">If you uncheck "Keep filters," we'll clear filters unless you toggle "Remove Filters and Sorting" only for a single search in the popup.</div>
       </div>
 
-      <div class="row">
-        <label for="searchResultBehavior">Search Result Behavior</label>
-        <select id="searchResultBehavior">
-          <option value="newTab">Open in new tab</option>
-          <option value="currentTab">Open in current tab</option>
-        </select>
-        <div class="hint">Controls how search results open when clicking Search.</div>
-      </div>
-
-      <div class="row">
-        <label for="themeSelect">Theme</label>
-        <select id="themeSelect">
-          <option value="system">System</option>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-        <div class="hint">Controls both the popup and this page.</div>
+      <!-- Appearance Section -->
+      <div class="settings-section">
+        <h3 class="section-title">Appearance</h3>
+        
+        <div class="settings-row">
+          <div class="form-group-horizontal">
+            <div class="form-label">
+              <strong>Theme</strong>
+              <div class="hint">Controls both the popup and this page.</div>
+            </div>
+            <select id="themeSelect">
+              <option value="system">System</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
 
