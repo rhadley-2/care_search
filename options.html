@@ -287,6 +287,61 @@
         cursor: pointer;
       }
 
+      .url-preview {
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        margin-top: 12px;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .preview-header {
+        font-weight: 600;
+        color: var(--fg);
+        margin-bottom: 12px;
+      }
+
+      .preview-section {
+        margin-bottom: 12px;
+      }
+
+      .preview-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .preview-label {
+        font-weight: 600;
+        color: var(--fg);
+        margin-bottom: 4px;
+      }
+
+      .preview-values {
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .preview-item {
+        color: var(--muted);
+        margin-left: 8px;
+        margin-bottom: 2px;
+      }
+
+      .preview-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .preview-empty {
+        color: var(--muted);
+        font-style: italic;
+      }
+
+      .preview-error {
+        color: #ef4444;
+        font-weight: 500;
+      }
+
       @media (max-width: 640px) {
         .container {
           padding: 16px;
@@ -342,6 +397,7 @@
             <div class="hint">
               We'll copy parameters from this URL (e.g., language/locale). Your search term will always override the "search" parameter.
             </div>
+            <div id="urlPreview" class="url-preview" style="display: none;"></div>
           </div>
         </div>
 

@@ -31,6 +31,65 @@ function parseParamsFromUrlStr(urlStr) {
   return out;
 }
 
+function parseUrlPreview(urlStr) {
+  if (!urlStr.trim()) {
+    return { valid: false, filters: [], sort: [], locale: null, other: [] };
+  }
+  
+  try {
+    const params = parseParamsFromUrlStr(urlStr);
+    const preview = { valid: true, filters: [], sort: [], locale: null, other: [] };
+    
+    // Parse filters
+    if (params.filters) {
+      try {
+        const decodedFilters = JSON.parse(decodeURIComponent(decodeURIComponent(params.filters)));
+        if (Array.isArray(decodedFilters)) {
+          decodedFilters.forEach(filter => {
+            if (filter.field === 'KB_LOCALE' && filter.values) {
+              preview.locale = filter.values;
+            } else {
+              preview.filters.push({
+                field: filter.field || 'Unknown',
+                type: filter.filterType || 'Unknown',
+                values: filter.values || []
+              });
+            }
+          });
+        }
+      } catch (e) {
+        preview.filters.push({ field: 'filters', type: 'Raw', values: [params.filters] });
+      }
+    }
+    
+    // Parse sort
+    if (params.sort) {
+      try {
+        const decodedSort = JSON.parse(decodeURIComponent(decodeURIComponent(params.sort)));
+        if (Array.isArray(decodedSort)) {
+          preview.sort = decodedSort.map(s => ({
+            field: s.field || 'Unknown',
+            direction: s.sortDirection || 'Unknown'
+          }));
+        }
+      } catch (e) {
+        preview.sort.push({ field: 'sort', direction: 'Raw: ' + params.sort });
+      }
+    }
+    
+    // Parse other parameters
+    Object.keys(params).forEach(key => {
+      if (!['filters', 'sort', 'search'].includes(key)) {
+        preview.other.push({ key, value: params[key] });
+      }
+    });
+    
+    return preview;
+  } catch (e) {
+    return { valid: false, filters: [], sort: [], locale: null, other: [] };
+  }
+}
+
 function buildUrlFromParams(params) {
   const u = new URL('https://netflixcare.sprinklr.com/care/knowledge-base');
   Object.entries(params || {}).forEach(([k, v]) => u.searchParams.set(k, v));
@@ -58,6 +117,71 @@ function applyTheme(theme) {
   document.body.setAttribute('data-theme', themeToApply);
 }
 
+function updateUrlPreview(urlStr) {
+  const preview = parseUrlPreview(urlStr);
+  const previewElement = document.getElementById('urlPreview');
+  
+  if (!urlStr.trim()) {
+    previewElement.style.display = 'none';
+    return;
+  }
+  
+  previewElement.style.display = 'block';
+  
+  let html = '';
+  
+  if (!preview.valid) {
+    html = '<div class="preview-error">Invalid URL format</div>';
+  } else {
+    html = '<div class="preview-header">Parameters that will be imported:</div>';
+    
+    // Show locale
+    if (preview.locale && preview.locale.length > 0) {
+      html += `<div class="preview-section">
+        <div class="preview-label">Locale:</div>
+        <div class="preview-values">${preview.locale.join(', ')}</div>
+      </div>`;
+    }
+    
+    // Show filters
+    if (preview.filters.length > 0) {
+      html += `<div class="preview-section">
+        <div class="preview-label">Filters:</div>`;
+      preview.filters.forEach(filter => {
+        const values = Array.isArray(filter.values) ? filter.values.join(', ') : filter.values;
+        html += `<div class="preview-item">${filter.field} (${filter.type}): ${values}</div>`;
+      });
+      html += '</div>';
+    }
+    
+    // Show sort
+    if (preview.sort.length > 0) {
+      html += `<div class="preview-section">
+        <div class="preview-label">Sort:</div>`;
+      preview.sort.forEach(sort => {
+        html += `<div class="preview-item">${sort.field}: ${sort.direction}</div>`;
+      });
+      html += '</div>';
+    }
+    
+    // Show other parameters
+    if (preview.other.length > 0) {
+      html += `<div class="preview-section">
+        <div class="preview-label">Other parameters:</div>`;
+      preview.other.forEach(param => {
+        html += `<div class="preview-item">${param.key}: ${param.value}</div>`;
+      });
+      html += '</div>';
+    }
+    
+    if (preview.locale === null && preview.filters.length === 0 && preview.sort.length === 0 && preview.other.length === 0) {
+      html += '<div class="preview-empty">No parameters found in this URL</div>';
+    }
+  }
+  
+  previewElement.innerHTML = html;
+}
+
 async function restore() {
   const { baseParams, keepFilters, keepSort, forceShareView, theme, searchResultBehavior } = await getSettings();
   document.getElementById('baseUrl').value = Object.keys(baseParams || {}).length
@@ -70,6 +194,9 @@ async function restore() {
   document.getElementById('searchResultBehavior').value = searchResultBehavior || 'newTab';
   document.getElementById('themeSelect').value = theme || 'system';
   applyTheme(theme);
+  
+  // Update URL preview
+  updateUrlPreview(document.getElementById('baseUrl').value);
 }
 
 async function save() {
@@ -125,6 +252,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Then restore all other settings
   await restore();
+  
+  // Add reactive URL preview
+  const baseUrlInput = document.getElementById('baseUrl');
+  baseUrlInput.addEventListener('input', (e) => {
+    updateUrlPreview(e.target.value);
+  });
 });
 document.getElementById('saveBtn').addEventListener('click', save);
 document.getElementById('resetDefaults').addEventListener('click', resetDefaults);
