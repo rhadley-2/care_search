@@ -31,6 +31,63 @@ function parseParamsFromUrlStr(urlStr) {
   return out;
 }
 
+// Human-friendly field mappings
+const FIELD_MAPPINGS = {
+  'KB_CONTENT_STATUS': 'Status',
+  'KB_LOCALE': 'Language',
+  'KB_CATEGORY': 'Category',
+  'KB_SUBCATEGORY': 'Subcategory',
+  'KB_CONTENT_TYPE': 'Content Type',
+  'KB_TAGS': 'Tags',
+  'KB_PRODUCT': 'Product',
+  'KB_REGION': 'Region',
+  'CREATED_DATE': 'Created Date',
+  'MODIFIED_DATE': 'Modified Date',
+  'KB_AUTHOR': 'Author',
+  'KB_PRIORITY': 'Priority'
+};
+
+// Human-friendly value mappings
+const VALUE_MAPPINGS = {
+  'DRAFT': 'Draft',
+  'PUBLISHED': 'Published',
+  'ARCHIVED': 'Archived',
+  'UNDER_REVIEW': 'Under Review',
+  'INTERNAL': 'Internal',
+  'EXTERNAL': 'External',
+  'FAQ': 'FAQ',
+  'TROUBLESHOOTING': 'Troubleshooting',
+  'HOWTO': 'How To',
+  'ARTICLE': 'Article'
+};
+
+// Human-friendly filter type mappings
+const FILTER_TYPE_MAPPINGS = {
+  'IN': 'is',
+  'NOT_IN': 'is not',
+  'CONTAINS': 'contains',
+  'NOT_CONTAINS': 'does not contain',
+  'EQUALS': 'equals',
+  'NOT_EQUALS': 'does not equal',
+  'GREATER_THAN': 'greater than',
+  'LESS_THAN': 'less than'
+};
+
+function humanizeFieldName(field) {
+  return FIELD_MAPPINGS[field] || field.replace(/KB_|_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+}
+
+function humanizeValue(value) {
+  if (Array.isArray(value)) {
+    return value.map(v => VALUE_MAPPINGS[v] || v).join(', ');
+  }
+  return VALUE_MAPPINGS[value] || value;
+}
+
+function humanizeFilterType(type) {
+  return FILTER_TYPE_MAPPINGS[type] || type.toLowerCase();
+}
+
 function parseUrlPreview(urlStr) {
   if (!urlStr.trim()) {
     return { valid: false, filters: [], sort: [], locale: null, other: [] };
@@ -47,18 +104,19 @@ function parseUrlPreview(urlStr) {
         if (Array.isArray(decodedFilters)) {
           decodedFilters.forEach(filter => {
             if (filter.field === 'KB_LOCALE' && filter.values) {
-              preview.locale = filter.values;
+              preview.locale = filter.values.map(v => humanizeValue(v));
             } else {
               preview.filters.push({
-                field: filter.field || 'Unknown',
-                type: filter.filterType || 'Unknown',
-                values: filter.values || []
+                field: humanizeFieldName(filter.field || 'Unknown'),
+                type: humanizeFilterType(filter.filterType || 'Unknown'),
+                values: humanizeValue(filter.values || []),
+                rawField: filter.field
               });
             }
           });
         }
       } catch (e) {
-        preview.filters.push({ field: 'filters', type: 'Raw', values: [params.filters] });
+        preview.filters.push({ field: 'Filters', type: 'Raw', values: [params.filters] });
       }
     }
     
@@ -68,12 +126,13 @@ function parseUrlPreview(urlStr) {
         const decodedSort = JSON.parse(decodeURIComponent(decodeURIComponent(params.sort)));
         if (Array.isArray(decodedSort)) {
           preview.sort = decodedSort.map(s => ({
-            field: s.field || 'Unknown',
-            direction: s.sortDirection || 'Unknown'
+            field: humanizeFieldName(s.field || 'Unknown'),
+            direction: (s.sortDirection || 'Unknown').toLowerCase() === 'desc' ? 'newest first' : 'oldest first',
+            rawField: s.field
           }));
         }
       } catch (e) {
-        preview.sort.push({ field: 'sort', direction: 'Raw: ' + params.sort });
+        preview.sort.push({ field: 'Sort', direction: 'Raw: ' + params.sort });
       }
     }
     
@@ -148,8 +207,7 @@ function updateUrlPreview(urlStr) {
       html += `<div class="preview-section">
         <div class="preview-label">Filters:</div>`;
       preview.filters.forEach(filter => {
-        const values = Array.isArray(filter.values) ? filter.values.join(', ') : filter.values;
-        html += `<div class="preview-item">${filter.field} (${filter.type}): ${values}</div>`;
+        html += `<div class="preview-item">${filter.field} ${filter.type} ${filter.values}</div>`;
       });
       html += '</div>';
     }
@@ -157,9 +215,9 @@ function updateUrlPreview(urlStr) {
     // Show sort
     if (preview.sort.length > 0) {
       html += `<div class="preview-section">
-        <div class="preview-label">Sort:</div>`;
+        <div class="preview-label">Sorting:</div>`;
       preview.sort.forEach(sort => {
-        html += `<div class="preview-item">${sort.field}: ${sort.direction}</div>`;
+        html += `<div class="preview-item">${sort.field} (${sort.direction})</div>`;
       });
       html += '</div>';
     }
