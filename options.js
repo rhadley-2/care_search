@@ -44,7 +44,9 @@ const FIELD_MAPPINGS = {
   'CREATED_DATE': 'Created Date',
   'MODIFIED_DATE': 'Modified Date',
   'KB_AUTHOR': 'Author',
-  'KB_PRIORITY': 'Priority'
+  'KB_PRIORITY': 'Priority',
+  'FOLDER_ID': 'Category',
+  'FOLDER ID': 'Category'
 };
 
 // Human-friendly value mappings
@@ -175,14 +177,16 @@ function parseUrlPreview(urlStr) {
               let values = filter.values || [];
               
               // Special handling for folder/category IDs
-              if (filter.field === 'FOLDER_ID' && Array.isArray(values)) {
+              if ((filter.field === 'FOLDER_ID' || filter.field === 'FOLDER ID') && Array.isArray(values)) {
                 values = values.map(id => getCategoryName(id));
+              } else if ((filter.field === 'FOLDER_ID' || filter.field === 'FOLDER ID') && !Array.isArray(values)) {
+                values = getCategoryName(values);
               }
               
               preview.filters.push({
-                field: filter.field === 'FOLDER_ID' ? 'Category' : humanizeFieldName(filter.field || 'Unknown'),
+                field: (filter.field === 'FOLDER_ID' || filter.field === 'FOLDER ID') ? 'Category' : humanizeFieldName(filter.field || 'Unknown'),
                 type: humanizeFilterType(filter.filterType || 'Unknown'),
-                values: Array.isArray(values) ? values.join(', ') : humanizeValue(values),
+                values: Array.isArray(values) ? values.join(', ') : (values || ''),
                 rawField: filter.field
               });
             }
