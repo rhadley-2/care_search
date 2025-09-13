@@ -50,7 +50,12 @@ function setSettings(partial) {
 }
 
 function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme || 'system');
+  const root = document.documentElement;
+  const themeToApply = theme || 'system';
+  root.setAttribute('data-theme', themeToApply);
+  
+  // Also set it on body as a fallback
+  document.body.setAttribute('data-theme', themeToApply);
 }
 
 async function restore() {
@@ -113,7 +118,14 @@ async function onThemeChange(e) {
   applyTheme(theme);
 }
 
-document.addEventListener('DOMContentLoaded', restore);
+document.addEventListener('DOMContentLoaded', async () => {
+  // Apply theme immediately on load
+  const { theme } = await getSettings();
+  applyTheme(theme);
+  
+  // Then restore all other settings
+  await restore();
+});
 document.getElementById('saveBtn').addEventListener('click', save);
 document.getElementById('resetDefaults').addEventListener('click', resetDefaults);
 document.getElementById('themeSelect').addEventListener('change', onThemeChange);

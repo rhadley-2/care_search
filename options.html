@@ -33,7 +33,7 @@
         --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
       }
       @media (prefers-color-scheme: dark) {
-        :root[data-theme="system"] {
+        :root[data-theme="system"], :root:not([data-theme]) {
           --bg: #0f1115;
           --fg: #e5e7eb;
           --muted: #9ca3af;
@@ -87,10 +87,12 @@
         display: block;
       }
       @media (prefers-color-scheme: dark) {
-        :root[data-theme="system"] .settings-icon.light {
+        :root[data-theme="system"] .settings-icon.light, 
+        :root:not([data-theme]) .settings-icon.light {
           display: none;
         }
-        :root[data-theme="system"] .settings-icon.dark {
+        :root[data-theme="system"] .settings-icon.dark,
+        :root:not([data-theme]) .settings-icon.dark {
           display: block;
         }
       }
