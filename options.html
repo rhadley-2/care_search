@@ -42,7 +42,34 @@
         margin: 0 auto;
         padding: 20px;
       }
-      h2 { margin: 0 0 12px; }
+      h2 { 
+        margin: 0 0 12px; 
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+      }
+      .settings-icon {
+        width: 32px;
+        height: 32px;
+      }
+      .settings-icon.dark {
+        display: none;
+      }
+      :root[data-theme="dark"] .settings-icon.light {
+        display: none;
+      }
+      :root[data-theme="dark"] .settings-icon.dark {
+        display: block;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root[data-theme="system"] .settings-icon.light {
+          display: none;
+        }
+        :root[data-theme="system"] .settings-icon.dark {
+          display: block;
+        }
+      }
       .row { margin-bottom: 14px; }
       label { display: block; font-weight: 600; margin-bottom: 6px; }
       .hint { color: var(--muted); font-size: 12px; }
@@ -85,7 +112,11 @@
   </head>
   <body>
     <div class="container">
-      <h2>NetflixCare Search Settings</h2>
+      <h2>
+        <img src="icon128.png" class="settings-icon light" alt="Settings icon">
+        <img src="icon128_dark.png" class="settings-icon dark" alt="Settings icon">
+        NetflixCare Search Settings
+      </h2>
 
       <div class="row">
         <label for="baseUrl">Base shared-view URL (optional)</label>
@@ -107,6 +138,15 @@
           <label class="switch"><input type="checkbox" id="forceShareView" checked /> Force shareView=1</label>
         </div>
         <div class="hint">If you uncheck "Keep filters," we'll clear filters unless you toggle "Remove Filters and Sorting" only for a single search in the popup.</div>
+      </div>
+
+      <div class="row">
+        <label for="searchResultBehavior">Search Result Behavior</label>
+        <select id="searchResultBehavior">
+          <option value="newTab">Open in new tab</option>
+          <option value="currentTab">Open in current tab</option>
+        </select>
+        <div class="hint">Controls how search results open when clicking Search.</div>
       </div>
 
       <div class="row">

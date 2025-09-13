@@ -14,7 +14,8 @@ const DEFAULT_SETTINGS = {
   keepFilters: true,
   keepSort: false,
   forceShareView: true,
-  theme: 'system'
+  theme: 'system',
+  searchResultBehavior: 'newTab'
 };
 
 function parseParamsFromUrlStr(urlStr) {
@@ -53,7 +54,7 @@ function applyTheme(theme) {
 }
 
 async function restore() {
-  const { baseParams, keepFilters, keepSort, forceShareView, theme } = await getSettings();
+  const { baseParams, keepFilters, keepSort, forceShareView, theme, searchResultBehavior } = await getSettings();
   document.getElementById('baseUrl').value = Object.keys(baseParams || {}).length
     ? buildUrlFromParams(baseParams)
     : '';
@@ -61,6 +62,7 @@ async function restore() {
   document.getElementById('keepSort').checked = !!keepSort;
   document.getElementById('forceShareView').checked = !!forceShareView;
 
+  document.getElementById('searchResultBehavior').value = searchResultBehavior || 'newTab';
   document.getElementById('themeSelect').value = theme || 'system';
   applyTheme(theme);
 }
@@ -70,12 +72,13 @@ async function save() {
   const keepFilters = document.getElementById('keepFilters').checked;
   const keepSort = document.getElementById('keepSort').checked;
   const forceShareView = document.getElementById('forceShareView').checked;
+  const searchResultBehavior = document.getElementById('searchResultBehavior').value;
 
   const baseParams = baseUrl ? parseParamsFromUrlStr(baseUrl) : {};
   // ensure we never persist a 'search' key
   delete baseParams.search;
 
-  await setSettings({ baseParams, keepFilters, keepSort, forceShareView });
+  await setSettings({ baseParams, keepFilters, keepSort, forceShareView, searchResultBehavior });
 
   const status = document.getElementById('status');
   status.textContent = 'Saved';
@@ -87,7 +90,8 @@ async function resetDefaults() {
     baseParams: { filters: buildLocaleFilter(['en_US']) },
     keepFilters: true,
     keepSort: false,
-    forceShareView: true
+    forceShareView: true,
+    searchResultBehavior: 'newTab'
   });
   await restore();
   const status = document.getElementById('status');

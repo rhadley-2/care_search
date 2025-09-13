@@ -57,6 +57,30 @@
         font-weight: 600;
         font-size: 14px;
         letter-spacing: 0.2px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .title-icon {
+        width: 20px;
+        height: 20px;
+      }
+      .title-icon.dark {
+        display: none;
+      }
+      :root[data-theme="dark"] .title-icon.light {
+        display: none;
+      }
+      :root[data-theme="dark"] .title-icon.dark {
+        display: block;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root[data-theme="system"] .title-icon.light {
+          display: none;
+        }
+        :root[data-theme="system"] .title-icon.dark {
+          display: block;
+        }
       }
       .muted {
         color: var(--muted);
@@ -176,10 +200,14 @@
   <body>
     <div class="wrap">
       <div class="row">
-        <div class="title">NetflixCare Search</div>
+        <div class="title">
+          <img src="icon48.png" class="title-icon light" alt="Search icon">
+          <img src="icon48_dark.png" class="title-icon dark" alt="Search icon">
+          NetflixCare Search
+        </div>
         <div>
           <select id="themeSelect" class="select" title="Theme">
-            <option value="" disabled>Theme</option>
+            <option value="" disabled selected>Theme</option>
             <option value="system">System</option>
             <option value="light">Light</option>
             <option value="dark">Dark</option>
@@ -210,7 +238,6 @@
       </div>
 
       <div class="footer">
-        <div class="muted">Locale defaults from Settings</div>
       </div>
     </div>
 

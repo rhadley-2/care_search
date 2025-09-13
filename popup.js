@@ -19,7 +19,8 @@ const DEFAULT_SETTINGS = {
   keepFilters: true,     // keep the locale filter by default
   keepSort: false,       // clear sort by default
   forceShareView: true,  // set shareView=1 by default
-  theme: 'system'        // 'system' | 'light' | 'dark'
+  theme: 'system',       // 'system' | 'light' | 'dark'
+  searchResultBehavior: 'newTab'  // 'newTab' | 'currentTab'
 };
 
 function getSettings() {
@@ -70,7 +71,7 @@ async function hasCustomDefaults() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const { theme } = await getSettings();
-  document.getElementById('themeSelect').value = theme || 'system';
+  // Don't set the select value - keep it showing "Theme"
   applyTheme(theme);
   
   // Auto-enable custom default if user has custom settings
@@ -135,7 +136,7 @@ async function doSearch() {
   const input = document.getElementById('searchInput').value.trim();
   if (!input) return;
 
-  const { baseParams, keepFilters, keepSort, forceShareView } = await getSettings();
+  const { baseParams, keepFilters, keepSort, forceShareView, searchResultBehavior } = await getSettings();
   const clean = document.getElementById('cleanSwitch').dataset.on === 'true';
   const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
 
@@ -177,5 +178,10 @@ async function doSearch() {
   }
 
   const url = `https://netflixcare.sprinklr.com/care/knowledge-base?${params.toString()}`;
-  chrome.tabs.create({ url });
+  
+  if (searchResultBehavior === 'currentTab') {
+    chrome.tabs.update({ url });
+  } else {
+    chrome.tabs.create({ url });
+  }
 }
