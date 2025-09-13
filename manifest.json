@@ -17,6 +17,7 @@
     "128": "icon128.png"
   },
   "permissions": ["storage", "tabs"],
+  "host_permissions": ["https://netflixcare.sprinklr.com/*"],
   "options_page": "options.html",
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"

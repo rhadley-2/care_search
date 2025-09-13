@@ -84,6 +84,79 @@ function humanizeValue(value) {
   return VALUE_MAPPINGS[value] || value;
 }
 
+// Category mapping functionality
+let categoryMappings = {};
+
+async function fetchCategoryMappings() {
+  try {
+    // Use the NetflixCare GraphQL endpoint
+    const endpoint = 'https://netflixcare.sprinklr.com/ui/graphql/searchFolder?op=searchFolder&requestId=space-' + 
+                    Math.random().toString(36).substring(2, 11) + '-' +
+                    Math.random().toString(36).substring(2, 6) + '-' +
+                    Math.random().toString(36).substring(2, 6) + '-' +
+                    Math.random().toString(36).substring(2, 6) + '-' +
+                    Math.random().toString(36).substring(2, 14);
+    
+    const response = await fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'NetflixCare Search Extension'
+      },
+      credentials: 'include' // Include cookies for authentication
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Build ID to name mapping
+    if (data?.data?.searchFolder?.result) {
+      const mappings = {};
+      data.data.searchFolder.result.forEach(folder => {
+        mappings[folder.id] = folder.name;
+      });
+      
+      // Cache mappings with timestamp
+      const cacheData = {
+        mappings,
+        timestamp: Date.now(),
+        expires: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+      };
+      
+      await chrome.storage.sync.set({ categoryMappings: cacheData });
+      categoryMappings = mappings;
+      return mappings;
+    }
+  } catch (error) {
+    console.warn('Failed to fetch category mappings:', error);
+    // Try to use cached mappings
+    const cached = await getCachedCategoryMappings();
+    return cached || {};
+  }
+}
+
+async function getCachedCategoryMappings() {
+  try {
+    const result = await chrome.storage.sync.get('categoryMappings');
+    const cached = result.categoryMappings;
+    
+    if (cached && cached.expires > Date.now()) {
+      categoryMappings = cached.mappings;
+      return cached.mappings;
+    }
+  } catch (error) {
+    console.warn('Failed to get cached category mappings:', error);
+  }
+  return {};
+}
+
+function getCategoryName(categoryId) {
+  return categoryMappings[categoryId] || categoryId;
+}
+
 function humanizeFilterType(type) {
   return FILTER_TYPE_MAPPINGS[type] || type.toLowerCase();
 }
@@ -106,10 +179,17 @@ function parseUrlPreview(urlStr) {
             if (filter.field === 'KB_LOCALE' && filter.values) {
               preview.locale = filter.values.map(v => humanizeValue(v));
             } else {
+              let values = filter.values || [];
+              
+              // Special handling for folder/category IDs
+              if (filter.field === 'FOLDER_ID' && Array.isArray(values)) {
+                values = values.map(id => getCategoryName(id));
+              }
+              
               preview.filters.push({
-                field: humanizeFieldName(filter.field || 'Unknown'),
+                field: filter.field === 'FOLDER_ID' ? 'Category' : humanizeFieldName(filter.field || 'Unknown'),
                 type: humanizeFilterType(filter.filterType || 'Unknown'),
-                values: humanizeValue(filter.values || []),
+                values: Array.isArray(values) ? values.join(', ') : humanizeValue(values),
                 rawField: filter.field
               });
             }
@@ -308,6 +388,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const { theme } = await getSettings();
   applyTheme(theme);
   
+  // Load category mappings
+  await getCachedCategoryMappings();
+  
   // Then restore all other settings
   await restore();
   
@@ -319,4 +402,42 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 document.getElementById('saveBtn').addEventListener('click', save);
 document.getElementById('resetDefaults').addEventListener('click', resetDefaults);
+document.getElementById('refreshCategories').addEventListener('click', async () => {
+  const button = document.getElementById('refreshCategories');
+  const originalText = button.textContent;
+  
+  try {
+    button.textContent = 'Fetching...';
+    button.disabled = true;
+    
+    await fetchCategoryMappings();
+    
+    const status = document.getElementById('status');
+    status.textContent = 'Categories Updated';
+    status.classList.add('show');
+    setTimeout(() => {
+      status.classList.remove('show');
+      setTimeout(() => (status.textContent = ''), 200);
+    }, 1200);
+    
+    // Refresh the preview if there's a URL
+    const baseUrl = document.getElementById('baseUrl').value;
+    if (baseUrl) {
+      updateUrlPreview(baseUrl);
+    }
+  } catch (error) {
+    const status = document.getElementById('status');
+    status.textContent = 'Failed to fetch categories';
+    status.style.background = '#ef4444';
+    status.classList.add('show');
+    setTimeout(() => {
+      status.classList.remove('show');
+      status.style.background = 'var(--success)';
+      setTimeout(() => (status.textContent = ''), 200);
+    }, 2000);
+  } finally {
+    button.textContent = originalText;
+    button.disabled = false;
+  }
+});
 document.getElementById('themeSelect').addEventListener('change', onThemeChange);
