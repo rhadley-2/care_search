@@ -275,7 +275,7 @@ function updateUrlPreview(urlStr) {
   if (!preview.valid) {
     html = '<div class="preview-error">Invalid URL format</div>';
   } else {
-    html = '<div class="preview-header">Parameters that will be imported:</div>';
+    html = '<div class="preview-header">Settings that will be copied from this URL:</div>';
     
     // Show locale
     if (preview.locale && preview.locale.length > 0) {
@@ -308,7 +308,7 @@ function updateUrlPreview(urlStr) {
     // Show other parameters
     if (preview.other.length > 0) {
       html += `<div class="preview-section">
-        <div class="preview-label">Other parameters:</div>`;
+        <div class="preview-label">Other settings:</div>`;
       preview.other.forEach(param => {
         html += `<div class="preview-item"><strong>${param.key}:</strong> ${param.value}</div>`;
       });
@@ -316,7 +316,7 @@ function updateUrlPreview(urlStr) {
     }
     
     if (preview.locale === null && preview.filters.length === 0 && preview.sort.length === 0 && preview.other.length === 0) {
-      html += '<div class="preview-empty">No parameters found in this URL</div>';
+      html += '<div class="preview-empty">No settings found in this URL</div>';
     }
   }
   

@@ -422,10 +422,10 @@
         
         <div class="settings-row">
           <div class="form-group">
-            <label for="baseUrl">Base shared-view URL (optional)</label>
-            <input type="text" id="baseUrl" placeholder="Paste a shared-view URL to inherit its filters/sort" />
+            <label for="baseUrl">ShareView URL (optional)</label>
+            <input type="text" id="baseUrl" placeholder="Paste a ShareView URL to copy its filters and settings" />
             <div class="hint">
-              We'll copy parameters from this URL (e.g., language/locale). Your search term will always override the "search" parameter.
+              Filters will be copied from the URL above. If the URL has a search phrase it will be ignored.
             </div>
             <div id="urlPreview" class="url-preview" style="display: none;"></div>
           </div>
@@ -435,11 +435,11 @@
           <div class="checkbox-group">
             <div class="checkbox-item">
               <input type="checkbox" id="keepFilters" />
-              <label for="keepFilters">Keep filters from base URL</label>
+              <label for="keepFilters">Keep filters from ShareView URL</label>
             </div>
             <div class="checkbox-item">
               <input type="checkbox" id="keepSort" />
-              <label for="keepSort">Keep sort from base URL</label>
+              <label for="keepSort">Keep sort from ShareView URL</label>
             </div>
             <div class="checkbox-item">
               <input type="checkbox" id="forceShareView" checked />
