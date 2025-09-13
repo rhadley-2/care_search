@@ -40,7 +40,7 @@
       html, body {
         padding: 0;
         margin: 0;
-        width: 320px;
+        width: 480px;
         background: var(--bg);
         color: var(--fg);
         font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -130,6 +130,10 @@
         background: var(--border);
         border-radius: 999px;
         cursor: pointer;
+        transition: background-color 0.15s ease;
+      }
+      .switch[data-on="true"] {
+        background: #22c55e;
       }
       .thumb {
         position: absolute;
@@ -175,11 +179,13 @@
         <div class="title">NetflixCare Search</div>
         <div>
           <select id="themeSelect" class="select" title="Theme">
+            <option value="" disabled>Theme</option>
             <option value="system">System</option>
             <option value="light">Light</option>
             <option value="dark">Dark</option>
           </select>
           <button id="openOptions" class="link" title="Settings">Settings</button>
+          <a href="#" id="helpLink" class="link" title="Learn how to customize your default search parameters">Setup Help</a>
         </div>
       </div>
 
@@ -189,14 +195,17 @@
       </div>
 
       <div class="chips">
-        <div class="chip" title="One-off: strip filters and sort">
-          Clean
+        <div class="chip">
+          Remove Filters and Sorting
           <div id="cleanSwitch" class="switch" role="switch" aria-checked="false" tabindex="0">
             <div class="thumb"></div>
           </div>
         </div>
         <div class="chip">
-          Tip <span class="kbd">Enter</span>
+          Custom Default Search Enable
+          <div id="customDefaultSwitch" class="switch" role="switch" aria-checked="false" tabindex="0">
+            <div class="thumb"></div>
+          </div>
         </div>
       </div>
 
