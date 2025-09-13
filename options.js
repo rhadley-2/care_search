@@ -45,6 +45,7 @@ const FIELD_MAPPINGS = {
   'MODIFIED_DATE': 'Modified Date',
   'KB_AUTHOR': 'Author',
   'KB_PRIORITY': 'Priority',
+  'KB_FOLDER_ID': 'Category',
   'FOLDER_ID': 'Category',
   'FOLDER ID': 'Category'
 };
@@ -171,20 +172,25 @@ function parseUrlPreview(urlStr) {
         const decodedFilters = JSON.parse(decodeURIComponent(decodeURIComponent(params.filters)));
         if (Array.isArray(decodedFilters)) {
           decodedFilters.forEach(filter => {
+            console.log('Parsing filter:', filter); // Debug log
             if (filter.field === 'KB_LOCALE' && filter.values) {
               preview.locale = filter.values.map(v => humanizeValue(v));
             } else {
               let values = filter.values || [];
               
               // Special handling for folder/category IDs
-              if ((filter.field === 'FOLDER_ID' || filter.field === 'FOLDER ID') && Array.isArray(values)) {
+              if (filter.field === 'KB_FOLDER_ID' && Array.isArray(values)) {
+                console.log('Found KB_FOLDER_ID array:', values); // Debug log
                 values = values.map(id => getCategoryName(id));
-              } else if ((filter.field === 'FOLDER_ID' || filter.field === 'FOLDER ID') && !Array.isArray(values)) {
+                console.log('Mapped to:', values); // Debug log
+              } else if (filter.field === 'KB_FOLDER_ID' && !Array.isArray(values)) {
+                console.log('Found KB_FOLDER_ID single value:', values); // Debug log
                 values = getCategoryName(values);
+                console.log('Mapped to:', values); // Debug log
               }
               
               preview.filters.push({
-                field: (filter.field === 'FOLDER_ID' || filter.field === 'FOLDER ID') ? 'Category' : humanizeFieldName(filter.field || 'Unknown'),
+                field: filter.field === 'KB_FOLDER_ID' ? 'Category' : humanizeFieldName(filter.field || 'Unknown'),
                 type: humanizeFilterType(filter.filterType || 'Unknown'),
                 values: Array.isArray(values) ? values.join(', ') : (values || ''),
                 rawField: filter.field
