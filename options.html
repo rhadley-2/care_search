@@ -342,6 +342,32 @@
         font-weight: 500;
       }
 
+      .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+
+      .settings-grid .settings-section {
+        margin-bottom: 0;
+      }
+
+      .centered-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 768px) {
+        .settings-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+      }
+
       @media (max-width: 640px) {
         .container {
           padding: 16px;
@@ -352,7 +378,7 @@
           margin-bottom: 20px;
         }
 
-        .action-buttons {
+        .action-buttons, .centered-actions {
           flex-direction: column;
           align-items: stretch;
         }
@@ -374,6 +400,10 @@
 
         h2 {
           font-size: 24px;
+        }
+
+        .centered-actions {
+          justify-content: stretch;
         }
       }
     </style>
@@ -421,48 +451,53 @@
           </div>
         </div>
 
-        <div class="action-buttons">
-          <button id="saveBtn" class="btn">Save Settings</button>
-          <button id="resetDefaults" class="btn secondary">Reset to Default</button>
-          <span id="status" class="status-message"></span>
-        </div>
       </div>
 
-      <!-- Search Behavior Section -->
-      <div class="settings-section">
-        <h3 class="section-title">Search Behavior</h3>
-        
-        <div class="settings-row">
-          <div class="form-group-horizontal">
-            <div class="form-label">
-              <strong>Search Result Behavior</strong>
-              <div class="hint">Controls how search results open when clicking Search.</div>
+      <!-- Search Behavior and Appearance Grid -->
+      <div class="settings-grid">
+        <!-- Search Behavior Section -->
+        <div class="settings-section">
+          <h3 class="section-title">Search Behavior</h3>
+          
+          <div class="settings-row">
+            <div class="form-group-horizontal">
+              <div class="form-label">
+                <strong>Search Result Behavior</strong>
+                <div class="hint">Controls how search results open when clicking Search.</div>
+              </div>
+              <select id="searchResultBehavior">
+                <option value="newTab">Open in new tab</option>
+                <option value="currentTab">Open in current tab</option>
+              </select>
             </div>
-            <select id="searchResultBehavior">
-              <option value="newTab">Open in new tab</option>
-              <option value="currentTab">Open in current tab</option>
-            </select>
+          </div>
+        </div>
+
+        <!-- Appearance Section -->
+        <div class="settings-section">
+          <h3 class="section-title">Appearance</h3>
+          
+          <div class="settings-row">
+            <div class="form-group-horizontal">
+              <div class="form-label">
+                <strong>Theme</strong>
+                <div class="hint">Controls both the popup and this page.</div>
+              </div>
+              <select id="themeSelect">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Appearance Section -->
-      <div class="settings-section">
-        <h3 class="section-title">Appearance</h3>
-        
-        <div class="settings-row">
-          <div class="form-group-horizontal">
-            <div class="form-label">
-              <strong>Theme</strong>
-              <div class="hint">Controls both the popup and this page.</div>
-            </div>
-            <select id="themeSelect">
-              <option value="system">System</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
-          </div>
-        </div>
+      <!-- Centered Action Buttons -->
+      <div class="centered-actions">
+        <button id="saveBtn" class="btn">Save Settings</button>
+        <button id="resetDefaults" class="btn secondary">Reset to Default</button>
+        <span id="status" class="status-message"></span>
       </div>
     </div>
 
