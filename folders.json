@@ -1,0 +1,378 @@
+help center mapping: 
+{
+    "data": {
+        "searchFolder": {
+            "result": [
+                {
+                    "id": "67aa720667d7a42189a05daf",
+                    "name": "Copy of new test",
+                    "subCategoryCount": 1,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "66d2e640042c826510cb78a9",
+                    "name": "new test",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "65b88f835990db76bf6dd91a",
+                    "name": "iFrame Source Codes",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "65b7ccc304f8e04c9439204f",
+                    "name": "Help Center",
+                    "subCategoryCount": 2,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "65b7cbea04f8e04c94391bd7",
+                    "name": "KB",
+                    "subCategoryCount": 5,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "65b7cb7f04f8e04c94391962",
+                    "name": "Issue Articles",
+                    "subCategoryCount": 1,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "65b7cb4004f8e04c943917f7",
+                    "name": "Escalations",
+                    "subCategoryCount": 1,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "65b7ca8c04f8e04c94391396",
+                    "name": "Training",
+                    "subCategoryCount": 1,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "65b7c9f104f8e04c94390f98",
+                    "name": "Legal",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "65b6a0c7d47d4c7a70d9f498",
+                    "name": "Formatting Options",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "64f208234a600276e4685dd7",
+                    "name": "ISSUE ARTICLE SEARCH ONLY",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder"
+                },
+                {
+                    "id": "6483387aee400f32bc5d533b",
+                    "name": "KB SEARCH ONLY [COMBINED MARKUP]",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder"
+                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+{
+    "data": {
+        "searchFolder": {
+            "result": [
+                {
+                    "id": "65b88f485990db76bf6dd82e",
+                    "name": "Content Blocks: Issue Articles",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b7cb7f04f8e04c94391962"
+                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+{
+    "data": {
+        "searchFolder": {
+            "result": [
+                {
+                    "id": "65b88f365990db76bf6dd7b2",
+                    "name": "Content Blocks: Escalation Posts",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b7cb4004f8e04c943917f7"  
+                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+{
+    "data": {
+        "searchFolder": {
+            "result": [
+                {
+                    "id": "65b88f585990db76bf6dd8ac",
+                    "name": "Content Blocks: Training",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b7ca8c04f8e04c94391396"
+                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+
+{
+    "data": {
+        "searchFolder": {
+            "result": [
+                {
+                    "id": "65b88d275990db76bf6dd1b2",
+                    "name": "Content Blocks: Help Center",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b7ccc304f8e04c9439204f"
+                },
+                {
+                    "id": "65b88ce75990db76bf6dd14a",
+                    "name": "HC Articles",
+                    "subCategoryCount": 9,
+                      "__typename": "Folder",
+                    "parent_id": "65b7ccc304f8e04c9439204f"
+                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+{
+    "data": {
+        "searchFolder": {
+            "result": [
+                {
+                    "id": "65b88de35990db76bf6dd33e",
+                    "name": "Help Center • Billing and Payments",
+                    "subCategoryCount": 2,
+       "__typename": "Folder",
+                    "parent_id": "65b88ce75990db76bf6dd14a"                },
+                {
+                    "id": "65b88dda5990db76bf6dd310",
+                    "name": "Help Center • Growth & Plans",
+                    "subCategoryCount": 0,
+       "__typename": "Folder",
+                    "parent_id": "65b88ce75990db76bf6dd14a"                },
+                {
+                    "id": "65b88dd35990db76bf6dd2f6",
+                    "name": "Help Center • Product Experience",
+                    "subCategoryCount": 0,
+       "__typename": "Folder",
+                    "parent_id": "65b88ce75990db76bf6dd14a"                },
+                {
+                    "id": "65b88dca5990db76bf6dd2d8",
+                    "name": "Help Center • Content",
+                    "subCategoryCount": 0,
+       "__typename": "Folder",
+                    "parent_id": "65b88ce75990db76bf6dd14a"                },
+                {
+                    "id": "65b88dc15990db76bf6dd2b9",
+                    "name": "Help Center • Customer Trust & Safety",
+                    "subCategoryCount": 0,
+       "__typename": "Folder",
+                    "parent_id": "65b88ce75990db76bf6dd14a"                },
+                {
+                    "id": "65b88db45990db76bf6dd29b",
+                    "name": "Help Center • Netflix Corporate",
+                    "subCategoryCount": 0,
+       "__typename": "Folder",
+                    "parent_id": "65b88ce75990db76bf6dd14a"                },
+                {
+                    "id": "65b88dab5990db76bf6dd276",
+                    "name": "Help Center • Devices",
+                    "subCategoryCount": 0,
+       "__typename": "Folder",
+                    "parent_id": "65b88ce75990db76bf6dd14a"                },
+                {
+                    "id": "65b88da75990db76bf6dd263",
+                    "name": "Help Center • Error Codes",
+                    "subCategoryCount": 0,
+       "__typename": "Folder",
+                    "parent_id": "65b88ce75990db76bf6dd14a"                },
+                {
+                    "id": "65b88d9d5990db76bf6dd22e",
+                    "name": "Help Center • Games",
+                    "subCategoryCount": 2,
+       "__typename": "Folder",
+                    "parent_id": "65b88ce75990db76bf6dd14a"                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+{
+    "data": {
+        "searchFolder": {
+            "result": [
+                {
+                    "id": "65b88df75990db76bf6dd38b",
+                    "name": "Direct Billing",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88de35990db76bf6dd33e"  
+                },
+                {
+                    "id": "65b88def5990db76bf6dd36e",
+                    "name": "Partner Payments",
+                    "subCategoryCount": 0,
+                   "__typename": "Folder",
+                    "parent_id": "65b88de35990db76bf6dd33e"  
+                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+    "data": {
+        "searchFolder": {
+            "result": [
+       
+                {
+                    "id": "65cd1102ee84900dc55f5c53",
+                    "name": "KB Refresh",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b7cbea04f8e04c94391bd7"                },
+                {
+                    "id": "65b88e5b5990db76bf6dd4e9",
+                    "name": "PSO News Posts",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b7cbea04f8e04c94391bd7"                },
+                {
+                    "id": "65b88e4f5990db76bf6dd4bb",
+                    "name": "KB articles",
+                    "subCategoryCount": 9,
+                    "__typename": "Folder",
+                    "parent_id": "65b7cbea04f8e04c94391bd7"                },
+                {
+                    "id": "65b88e2d5990db76bf6dd480",
+                    "name": "KB • Visual Guides",
+                    "subCategoryCount": 1,
+                    "__typename": "Folder",
+                    "parent_id": "65b7cbea04f8e04c94391bd7"                },
+                {
+                    "id": "65b88e1e5990db76bf6dd453",
+                    "name": "Content Blocks: KB",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b7cbea04f8e04c94391bd7"                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+
+{
+    "data": {
+        "searchFolder": {
+            "result": [
+                          {
+                    "id": "65b88eb45990db76bf6dd658",
+                    "name": "KB • Growth and Plans",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                },
+                {
+                    "id": "65b88eab5990db76bf6dd633",
+                    "name": "KB • Billing and Payments",
+                    "subCategoryCount": 2,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                },
+                {
+                    "id": "65b88ea15990db76bf6dd612",
+                    "name": "KB • Devices",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                },
+                {
+                    "id": "65b88e9a5990db76bf6dd5f3",
+                    "name": "KB • Netflix Corporate",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                },
+                {
+                    "id": "65b88e905990db76bf6dd5be",
+                    "name": "KB • Customer Trust & Safety",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                },
+                {
+                    "id": "65b88e835990db76bf6dd592",
+                    "name": "KB • Product Experience",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                },
+                {
+                    "id": "65b88e7a5990db76bf6dd563",
+                    "name": "KB • Agent Tools",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                },
+                {
+                    "id": "65b88e715990db76bf6dd547",
+                    "name": "KB • Games",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                },
+                {
+                    "id": "65b88e6d5990db76bf6dd533",
+                    "name": "KB • Content",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+ "data": {
+        "searchFolder": {
+            "result": [
+                        {
+                    "id": "65b88ec95990db76bf6dd6ac",
+                    "name": "KB • Direct Billing",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88eab5990db76bf6dd633"                },
+                {
+                    "id": "65b88ec05990db76bf6dd690",
+                    "name": "KB • Partner Payments",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88eab5990db76bf6dd633"                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
+{
+    "data": {
+        "searchFolder": {
+            "result": [
+                {
+                    "id": "65d7be2453eef8765f0cf147",
+                    "name": "Archive - DO NOT UPDATE/PUBLISH",
+                    "subCategoryCount": 0,
+                    "__typename": "Folder",
+                    "parent_id": "65b88e4f5990db76bf6dd4bb"                }
+            ],
+            "__typename": "LookupResponse_Folder"
+        }
+    }
+}
