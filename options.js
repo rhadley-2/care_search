@@ -197,8 +197,8 @@ function updateUrlPreview(urlStr) {
     // Show locale
     if (preview.locale && preview.locale.length > 0) {
       html += `<div class="preview-section">
-        <div class="preview-label">Locale:</div>
-        <div class="preview-values">${preview.locale.join(', ')}</div>
+        <div class="preview-label">Language:</div>
+        <div class="preview-item"><strong>Locale:</strong> ${preview.locale.join(', ')}</div>
       </div>`;
     }
     
@@ -207,7 +207,7 @@ function updateUrlPreview(urlStr) {
       html += `<div class="preview-section">
         <div class="preview-label">Filters:</div>`;
       preview.filters.forEach(filter => {
-        html += `<div class="preview-item">${filter.field} ${filter.type} ${filter.values}</div>`;
+        html += `<div class="preview-item"><strong>${filter.field}:</strong> ${filter.values}</div>`;
       });
       html += '</div>';
     }
@@ -217,7 +217,7 @@ function updateUrlPreview(urlStr) {
       html += `<div class="preview-section">
         <div class="preview-label">Sorting:</div>`;
       preview.sort.forEach(sort => {
-        html += `<div class="preview-item">${sort.field} (${sort.direction})</div>`;
+        html += `<div class="preview-item"><strong>${sort.field}:</strong> ${sort.direction}</div>`;
       });
       html += '</div>';
     }
@@ -227,7 +227,7 @@ function updateUrlPreview(urlStr) {
       html += `<div class="preview-section">
         <div class="preview-label">Other parameters:</div>`;
       preview.other.forEach(param => {
-        html += `<div class="preview-item">${param.key}: ${param.value}</div>`;
+        html += `<div class="preview-item"><strong>${param.key}:</strong> ${param.value}</div>`;
       });
       html += '</div>';
     }
