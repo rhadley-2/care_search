@@ -86,9 +86,64 @@ function humanizeValue(value) {
 
 // Hardcoded category mappings for instant lookup
 const CATEGORY_MAPPINGS = {
+  // Main categories
+  "67aa720667d7a42189a05daf": "Copy of new test",
+  "66d2e640042c826510cb78a9": "new test",
+  "65b88f835990db76bf6dd91a": "iFrame Source Codes",
+  "65b7ccc304f8e04c9439204f": "Help Center",
+  "65b7cbea04f8e04c94391bd7": "KB",
+  "65b7cb7f04f8e04c94391962": "Issue Articles",
+  "65b7cb4004f8e04c943917f7": "Escalations",
+  "65b7ca8c04f8e04c94391396": "Training",
+  "65b7c9f104f8e04c94390f98": "Legal",
+  "65b6a0c7d47d4c7a70d9f498": "Formatting Options",
+  "64f208234a600276e4685dd7": "ISSUE ARTICLE SEARCH ONLY",
+  "6483387aee400f32bc5d533b": "KB SEARCH ONLY [COMBINED MARKUP]",
+  
+  // Content Blocks
+  "65b88f485990db76bf6dd82e": "Content Blocks: Issue Articles",
+  "65b88f365990db76bf6dd7b2": "Content Blocks: Escalation Posts",
+  "65b88f585990db76bf6dd8ac": "Content Blocks: Training",
   "65b88d275990db76bf6dd1b2": "Content Blocks: Help Center",
-  "65b88ce75990db76bf6dd14a": "HC Articles"
-  // TODO: Add complete mappings from user data
+  "65b88e1e5990db76bf6dd453": "Content Blocks: KB",
+  
+  // Help Center subcategories
+  "65b88ce75990db76bf6dd14a": "HC Articles",
+  "65b88de35990db76bf6dd33e": "Help Center • Billing and Payments",
+  "65b88dda5990db76bf6dd310": "Help Center • Growth & Plans",
+  "65b88dd35990db76bf6dd2f6": "Help Center • Product Experience",
+  "65b88dca5990db76bf6dd2d8": "Help Center • Content",
+  "65b88dc15990db76bf6dd2b9": "Help Center • Customer Trust & Safety",
+  "65b88db45990db76bf6dd29b": "Help Center • Netflix Corporate",
+  "65b88dab5990db76bf6dd276": "Help Center • Devices",
+  "65b88da75990db76bf6dd263": "Help Center • Error Codes",
+  "65b88d9d5990db76bf6dd22e": "Help Center • Games",
+  
+  // Billing subcategories
+  "65b88df75990db76bf6dd38b": "Direct Billing",
+  "65b88def5990db76bf6dd36e": "Partner Payments",
+  
+  // KB subcategories
+  "65cd1102ee84900dc55f5c53": "KB Refresh",
+  "65b88e5b5990db76bf6dd4e9": "PSO News Posts",
+  "65b88e4f5990db76bf6dd4bb": "KB articles",
+  "65b88e2d5990db76bf6dd480": "KB • Visual Guides",
+  
+  // KB articles subcategories
+  "65b88eb45990db76bf6dd658": "KB • Growth and Plans",
+  "65b88eab5990db76bf6dd633": "KB • Billing and Payments",
+  "65b88ea15990db76bf6dd612": "KB • Devices",
+  "65b88e9a5990db76bf6dd5f3": "KB • Netflix Corporate",
+  "65b88e905990db76bf6dd5be": "KB • Customer Trust & Safety",
+  "65b88e835990db76bf6dd592": "KB • Product Experience",
+  "65b88e7a5990db76bf6dd563": "KB • Agent Tools",
+  "65b88e715990db76bf6dd547": "KB • Games",
+  "65b88e6d5990db76bf6dd533": "KB • Content",
+  "65d7be2453eef8765f0cf147": "Archive - DO NOT UPDATE/PUBLISH",
+  
+  // KB billing subcategories
+  "65b88ec95990db76bf6dd6ac": "KB • Direct Billing",
+  "65b88ec05990db76bf6dd690": "KB • Partner Payments"
 };
 
 function getCategoryName(categoryId) {
