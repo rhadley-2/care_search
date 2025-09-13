@@ -8,17 +8,21 @@ A Chrome extension for enhanced NetflixCare knowledge base searching with custom
 - **Custom Encoding**: Properly encodes search parameters to prevent display of encoded characters
 - **Flexible Search Results**: Choose to open results in a new tab or current tab
 - **Clean Search Option**: Toggle to remove all filters and sorting for a single search
+- **Real-time URL Preview**: Live preview of filters and settings when pasting ShareView URLs
+- **Human-friendly Display**: Technical database fields shown with readable names (e.g., "Status: Published" instead of "KB_CONTENT_STATUS (IN): PUBLISHED")
 
 ### ⚙️ Customizable Defaults
-- **Base URL Configuration**: Set a shared-view URL to inherit filters and locale settings
-- **Filter Management**: Choose to keep or clear filters from your base URL
+- **ShareView URL Configuration**: Set a ShareView URL to copy filters and locale settings
+- **Filter Management**: Choose to keep or clear filters from your ShareView URL
 - **Sort Control**: Maintain or remove sorting preferences
 - **Locale Support**: Defaults to en_US with support for custom locales
+- **Category Name Mapping**: Automatically converts technical category IDs to readable names (47+ categories supported)
 
 ### 🎨 Theme Support
 - **System Theme**: Automatically matches your OS theme preference
 - **Light/Dark Mode**: Manual theme selection with dedicated dark mode icons
 - **Consistent UI**: Matching theme across popup and settings pages
+- **Responsive Design**: Optimized layout for desktop, tablet, and mobile screens
 
 ### 🛠️ Advanced Configuration
 - **Custom Default Search**: Toggle to use your saved configuration or standard search
@@ -60,17 +64,25 @@ A Chrome extension for enhanced NetflixCare knowledge base searching with custom
 ### Advanced Configuration
 1. Click "Settings" in the popup to open the options page
 2. Configure your preferences:
-   - **Base shared-view URL**: Paste a NetflixCare URL to inherit its parameters
+   - **ShareView URL**: Paste a NetflixCare ShareView URL to copy its filters and settings
    - **Keep filters/sort**: Choose whether to maintain or clear these settings
    - **Search Result Behavior**: Select new tab or current tab opening
    - **Theme**: Set your preferred theme
 
+### URL Preview Feature
+The settings page now includes a real-time preview when you paste a ShareView URL:
+- **Live Parsing**: Automatically shows what filters and settings will be copied
+- **Human-readable Format**: Converts technical field names to user-friendly labels
+- **Category Names**: Displays actual category names instead of cryptic IDs
+- **Language Detection**: Shows locale settings in plain English
+- **Sort Preview**: Displays sorting preferences in readable format
+
 ## Configuration Options
 
-### Base URL Settings
-- **Base shared-view URL**: Optional URL to inherit filters and locale settings
-- **Keep filters from base URL**: Maintains filter settings from your base URL
-- **Keep sort from base URL**: Preserves sorting preferences
+### ShareView URL Settings
+- **ShareView URL**: Optional URL to copy filters and locale settings
+- **Keep filters from ShareView URL**: Maintains filter settings from your ShareView URL
+- **Keep sort from ShareView URL**: Preserves sorting preferences
 - **Force shareView=1**: Automatically adds share view parameter
 
 ### Search Behavior
@@ -146,7 +158,16 @@ The extension is ready for distribution as-is. For Chrome Web Store submission:
 
 ## Version History
 
-### v1.2 (Current)
+### v1.3 (Current)
+- **Major UI Redesign**: Complete settings page redesign with card-based layout and professional styling
+- **Real-time URL Preview**: Live preview showing filters and settings when pasting ShareView URLs
+- **Human-friendly Display**: Technical database fields converted to readable format (e.g., "Status: Published")
+- **Category Name Mapping**: Automatic conversion of 47+ category IDs to readable names
+- **Side-by-side Layout**: Search Behavior and Appearance sections arranged horizontally
+- **Improved Wording**: User-friendly terminology throughout (ShareView URL vs Base URL, Settings vs Parameters)
+- **Responsive Grid Layout**: Optimized for desktop with mobile fallback to single-column
+
+### v1.2
 - Added search result behavior setting (new tab vs current tab)
 - Improved UI with theme-specific icons
 - Enhanced popup and settings page layout
