@@ -167,6 +167,12 @@ The extension is ready for distribution as-is. For Chrome Web Store submission:
 - **Improved Wording**: User-friendly terminology throughout (ShareView URL vs Base URL, Settings vs Parameters)
 - **Responsive Grid Layout**: Optimized for desktop with mobile fallback to single-column
 
+### v1.3
+- **Category Name Mapping**: Automatic conversion of 47+ category IDs to readable names
+- **Side-by-side Layout**: Search Behavior and Appearance sections arranged horizontally
+- **Improved Wording**: User-friendly terminology throughout (ShareView URL vs Base URL, Settings vs Parameters)
+- **Responsive Grid Layout**: Optimized for desktop with mobile fallback to single-column
+
 ### v1.2
 - Added search result behavior setting (new tab vs current tab)
 - Improved UI with theme-specific icons
