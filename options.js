@@ -47,7 +47,12 @@ const FIELD_MAPPINGS = {
   'KB_PRIORITY': 'Priority',
   'KB_FOLDER_ID': 'Category',
   'FOLDER_ID': 'Category',
-  'FOLDER ID': 'Category'
+  'FOLDER ID': 'Category',
+  // Sort field mappings
+  'KB_TITLE_KEYWORD': 'Title',
+  'KB_MODIFIED_TIME': 'Modified On',
+  'KB_CREATED_DATE': 'Created On',
+  'KB_TEXT_MODIFIED_TIME': 'Content Modified Time'
 };
 
 // Human-friendly value mappings
@@ -208,11 +213,17 @@ function parseUrlPreview(urlStr) {
       try {
         const decodedSort = JSON.parse(decodeURIComponent(decodeURIComponent(params.sort)));
         if (Array.isArray(decodedSort)) {
-          preview.sort = decodedSort.map(s => ({
-            field: humanizeFieldName(s.field || 'Unknown'),
-            direction: (s.sortDirection || 'Unknown').toLowerCase() === 'desc' ? 'newest first' : 'oldest first',
-            rawField: s.field
-          }));
+          preview.sort = decodedSort.map(s => {
+            // Handle both URL format (key/order) and internal format (field/sortDirection)
+            const fieldName = s.key || s.field || 'Unknown';
+            const sortOrder = s.order || s.sortDirection || 'Unknown';
+            
+            return {
+              field: humanizeFieldName(fieldName),
+              direction: sortOrder.toLowerCase() === 'desc' ? 'newest first' : 'oldest first',
+              rawField: fieldName
+            };
+          });
         }
       } catch (e) {
         preview.sort.push({ field: 'Sort', direction: 'Raw: ' + params.sort });
