@@ -270,6 +270,7 @@ function applyTheme(theme) {
   document.body.setAttribute('data-theme', themeToApply);
 }
 
+
 function updateUrlPreview(urlStr) {
   const preview = parseUrlPreview(urlStr);
   const previewElement = document.getElementById('urlPreview');
@@ -401,6 +402,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Apply theme immediately on load
   const { theme } = await getSettings();
   applyTheme(theme);
+  
   
   // Then restore all other settings
   await restore();

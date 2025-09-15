@@ -43,6 +43,7 @@ function applyTheme(theme) {
   root.setAttribute('data-theme', theme || 'system');
 }
 
+
 function uiSetClean(on) {
   const sw = document.getElementById('cleanSwitch');
   sw.dataset.on = on ? 'true' : 'false';
@@ -73,6 +74,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const { theme } = await getSettings();
   // Don't set the select value - keep it showing "Theme"
   applyTheme(theme);
+  
   
   // Auto-enable custom default if user has custom settings
   const hasCustom = await hasCustomDefaults();
