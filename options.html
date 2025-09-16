@@ -77,25 +77,6 @@
         width: 32px;
         height: 32px;
       }
-      .settings-icon.dark {
-        display: none;
-      }
-      :root[data-theme="dark"] .settings-icon.light {
-        display: none;
-      }
-      :root[data-theme="dark"] .settings-icon.dark {
-        display: block;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root[data-theme="system"] .settings-icon.light, 
-        :root:not([data-theme]) .settings-icon.light {
-          display: none;
-        }
-        :root[data-theme="system"] .settings-icon.dark,
-        :root:not([data-theme]) .settings-icon.dark {
-          display: block;
-        }
-      }
 
       .settings-section {
         background: var(--card-bg);
@@ -411,8 +392,7 @@
   <body>
     <div class="container">
       <h2>
-        <img src="icon128.png" class="settings-icon light" alt="Settings icon">
-        <img src="icon128_dark.png" class="settings-icon dark" alt="Settings icon">
+        <img src="icon128.png" class="settings-icon" alt="Settings icon">
         NetflixCare Search Settings
       </h2>
 

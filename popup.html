@@ -65,23 +65,6 @@
         width: 20px;
         height: 20px;
       }
-      .title-icon.dark {
-        display: none;
-      }
-      :root[data-theme="dark"] .title-icon.light {
-        display: none;
-      }
-      :root[data-theme="dark"] .title-icon.dark {
-        display: block;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root[data-theme="system"] .title-icon.light {
-          display: none;
-        }
-        :root[data-theme="system"] .title-icon.dark {
-          display: block;
-        }
-      }
       .muted {
         color: var(--muted);
         font-size: 12px;
@@ -201,8 +184,7 @@
     <div class="wrap">
       <div class="row">
         <div class="title">
-          <img src="icon48.png" class="title-icon light" alt="Search icon">
-          <img src="icon48_dark.png" class="title-icon dark" alt="Search icon">
+          <img src="icon48.png" class="title-icon" alt="Search icon">
           NetflixCare Search
         </div>
         <div>
