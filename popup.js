@@ -154,28 +154,34 @@ async function doSearch() {
 
   // Filters
   if (clean) {
+    // Clean mode: remove all filters
     params.set('filters', encodeJson([]));
   } else if (customDefault && keepFilters) {
     // Use custom filters from baseParams if available
     if (!params.has('filters')) {
       params.set('filters', buildLocaleFilter(['en_US']));
     }
-  } else if (!keepFilters || !customDefault) {
+  } else if (customDefault) {
+    // Custom default is on but keepFilters is false - use baseParams filters or default
+    if (!params.has('filters')) {
+      params.set('filters', buildLocaleFilter(['en_US']));
+    }
+  } else {
+    // Neither clean nor custom default - remove filters
     params.set('filters', encodeJson([]));
-  } else if (!params.has('filters')) {
-    // If user has no base filters, default to en_US
-    params.set('filters', buildLocaleFilter(['en_US']));
   }
 
   // Sort
   if (clean) {
+    // Clean mode: remove all sorting
     params.set('sort', encodeJson([]));
   } else if (customDefault && keepSort) {
     // Keep sort from baseParams if available
     if (!params.has('sort')) {
       params.set('sort', encodeJson([]));
     }
-  } else if (!keepSort || !customDefault) {
+  } else {
+    // Either not custom default or keepSort is false - remove sorting
     params.set('sort', encodeJson([]));
   }
 
