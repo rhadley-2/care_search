@@ -161,10 +161,9 @@ async function doSearch() {
 
   // Simple logic: Clean mode overrides everything
   if (clean) {
-    // Clean mode: No filters, no sorting
-    console.log('Using clean mode - removing all filters and sorting');
-    params.set('filters', encodeJson([]));
-    params.set('sort', encodeJson([]));
+    // Clean mode: Completely remove filters and sorting parameters
+    console.log('Using clean mode - completely removing filters and sorting parameters');
+    // Don't add filters or sort parameters at all
   } else if (customDefault) {
     // Custom default mode: Use settings from options page
     console.log('Using custom default mode');
@@ -173,19 +172,15 @@ async function doSearch() {
     if (keepFilters && baseParams?.filters) {
       console.log('Keeping filters from baseParams:', baseParams.filters);
       params.set('filters', baseParams.filters);
-    } else {
-      console.log('Not keeping filters, setting empty');
-      params.set('filters', encodeJson([]));
     }
+    // If not keeping filters, don't add the parameter at all
     
     // Handle sorting
     if (keepSort && baseParams?.sort) {
       console.log('Keeping sort from baseParams:', baseParams.sort);
       params.set('sort', baseParams.sort);
-    } else {
-      console.log('Not keeping sort, setting empty');
-      params.set('sort', encodeJson([]));
     }
+    // If not keeping sort, don't add the parameter at all
     
     // Add other parameters from baseParams (excluding search, filters, sort)
     Object.entries(baseParams || {}).forEach(([key, value]) => {
@@ -195,9 +190,8 @@ async function doSearch() {
     });
   } else {
     // Default mode: No custom settings, no clean mode
-    console.log('Using default mode - no filters or sorting');
-    params.set('filters', encodeJson([]));
-    params.set('sort', encodeJson([]));
+    console.log('Using default mode - no filters or sorting parameters');
+    // Don't add filters or sort parameters at all
   }
 
   const url = `https://netflixcare.sprinklr.com/care/knowledge-base?${params.toString()}`;
