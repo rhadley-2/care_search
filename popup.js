@@ -142,47 +142,55 @@ async function doSearch() {
   const clean = document.getElementById('cleanSwitch').dataset.on === 'true';
   const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
 
-  // Start with user base params (typically contains filters for locale).
-  const params = new URLSearchParams();
-  Object.entries(baseParams || {}).forEach(([k, v]) => {
-    if (k.toLowerCase() !== 'search') params.set(k, v);
-  });
-
   // Required params
+  const params = new URLSearchParams();
   params.set('search', encodeURIComponent(input));
   if (forceShareView) params.set('shareView', '1');
 
-  // Filters
+  // Handle filters and sort based on mode
   if (clean) {
-    // Clean mode: remove all filters
+    // Clean mode: remove all filters and sorting
     params.set('filters', encodeJson([]));
-  } else if (customDefault && keepFilters) {
-    // Use custom filters from baseParams if available
-    if (!params.has('filters')) {
-      params.set('filters', buildLocaleFilter(['en_US']));
-    }
-  } else if (customDefault) {
-    // Custom default is on but keepFilters is false - use baseParams filters or default
-    if (!params.has('filters')) {
-      params.set('filters', buildLocaleFilter(['en_US']));
-    }
-  } else {
-    // Neither clean nor custom default - remove filters
-    params.set('filters', encodeJson([]));
-  }
-
-  // Sort
-  if (clean) {
-    // Clean mode: remove all sorting
     params.set('sort', encodeJson([]));
-  } else if (customDefault && keepSort) {
-    // Keep sort from baseParams if available
-    if (!params.has('sort')) {
+    
+    // Still add other baseParams (excluding filters and sort)
+    Object.entries(baseParams || {}).forEach(([k, v]) => {
+      if (k.toLowerCase() !== 'search' && k !== 'filters' && k !== 'sort') {
+        params.set(k, v);
+      }
+    });
+  } else {
+    // Start with user base params (typically contains filters for locale)
+    Object.entries(baseParams || {}).forEach(([k, v]) => {
+      if (k.toLowerCase() !== 'search') params.set(k, v);
+    });
+
+    // Apply filtering logic for non-clean mode
+    if (customDefault && keepFilters) {
+      // Use custom filters from baseParams if available
+      if (!params.has('filters')) {
+        params.set('filters', buildLocaleFilter(['en_US']));
+      }
+    } else if (customDefault) {
+      // Custom default is on but keepFilters is false - use baseParams filters or default
+      if (!params.has('filters')) {
+        params.set('filters', buildLocaleFilter(['en_US']));
+      }
+    } else {
+      // Neither clean nor custom default - remove filters
+      params.set('filters', encodeJson([]));
+    }
+
+    // Apply sort logic for non-clean mode
+    if (customDefault && keepSort) {
+      // Keep sort from baseParams if available
+      if (!params.has('sort')) {
+        params.set('sort', encodeJson([]));
+      }
+    } else {
+      // Either not custom default or keepSort is false - remove sorting
       params.set('sort', encodeJson([]));
     }
-  } else {
-    // Either not custom default or keepSort is false - remove sorting
-    params.set('sort', encodeJson([]));
   }
 
   const url = `https://netflixcare.sprinklr.com/care/knowledge-base?${params.toString()}`;
