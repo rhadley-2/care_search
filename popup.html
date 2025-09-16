@@ -130,6 +130,34 @@
         font-size: 12px;
         color: var(--muted);
       }
+
+      .save-preference-container {
+        display: flex;
+        align-items: center;
+        margin-left: 4px;
+      }
+
+      .save-checkbox {
+        display: none;
+      }
+
+      .save-label {
+        cursor: pointer;
+        font-size: 14px;
+        padding: 2px 4px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+        user-select: none;
+      }
+
+      .save-label:hover {
+        background: var(--input-bg);
+      }
+
+      .save-checkbox:checked + .save-label {
+        background: var(--accent);
+        color: white;
+      }
       .switch {
         position: relative;
         width: 34px;
@@ -178,6 +206,85 @@
         padding: 4px 8px;
         font-size: 12px;
       }
+
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .popup-content {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .popup-header h3 {
+        margin: 0;
+        color: var(--fg);
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--muted);
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+      }
+
+      .close-btn:hover {
+        background: var(--chip-bg);
+        color: var(--fg);
+      }
+
+      .popup-body {
+        padding: 20px;
+        color: var(--fg);
+        line-height: 1.4;
+      }
+
+      .popup-body p {
+        margin: 0 0 12px 0;
+        font-size: 13px;
+      }
+
+      .popup-body p:last-child {
+        margin-bottom: 0;
+      }
+
+      .popup-footer {
+        padding: 16px 20px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+      }
     </style>
   </head>
   <body>
@@ -212,14 +319,36 @@
           </div>
         </div>
         <div class="chip">
-          Custom Search Enable
+          Custom Search Enabled
           <div id="customDefaultSwitch" class="switch" role="switch" aria-checked="false" tabindex="0">
             <div class="thumb"></div>
+          </div>
+          <div class="save-preference-container">
+            <input type="checkbox" id="saveSearchPreference" class="save-checkbox" title="Save your search settings automatically when using Custom Search">
+            <label for="saveSearchPreference" class="save-label" title="Save your search settings automatically when using Custom Search">💾</label>
           </div>
         </div>
       </div>
 
       <div class="footer">
+      </div>
+    </div>
+
+    <!-- First-time user popup -->
+    <div id="firstTimePopup" class="popup-overlay" style="display: none;">
+      <div class="popup-content">
+        <div class="popup-header">
+          <h3>Welcome to NetflixCare Search!</h3>
+          <button id="closePopup" class="close-btn">×</button>
+        </div>
+        <div class="popup-body">
+          <p><strong>New Feature:</strong> Save your search preferences!</p>
+          <p>When you enable <strong>Custom Search</strong>, you can now click the 💾 icon to automatically save your current search settings (filters, sorting, etc.) for future use.</p>
+          <p>This makes it easy to reuse your preferred search configuration without having to set it up each time.</p>
+        </div>
+        <div class="popup-footer">
+          <button id="gotItBtn" class="btn">Got it!</button>
+        </div>
       </div>
     </div>
 
