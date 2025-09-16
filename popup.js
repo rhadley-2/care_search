@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const cleanSwitch = document.getElementById('cleanSwitch');
   cleanSwitch.addEventListener('click', () => {
     const on = cleanSwitch.dataset.on !== 'true';
+    console.log('Clean switch clicked:', { before: cleanSwitch.dataset.on, after: on });
     uiSetClean(on);
     if (on) uiSetCustomDefault(false); // Turn off custom default when clean is on
   });
@@ -142,6 +143,15 @@ async function doSearch() {
   const clean = document.getElementById('cleanSwitch').dataset.on === 'true';
   const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
 
+  // Debug logging
+  console.log('Search Debug:', {
+    clean,
+    customDefault,
+    keepFilters,
+    keepSort,
+    baseParams
+  });
+
   // Start with base URL parameters
   const params = new URLSearchParams();
   
@@ -152,22 +162,28 @@ async function doSearch() {
   // Simple logic: Clean mode overrides everything
   if (clean) {
     // Clean mode: No filters, no sorting
+    console.log('Using clean mode - removing all filters and sorting');
     params.set('filters', encodeJson([]));
     params.set('sort', encodeJson([]));
   } else if (customDefault) {
     // Custom default mode: Use settings from options page
+    console.log('Using custom default mode');
     
     // Handle filters
     if (keepFilters && baseParams?.filters) {
+      console.log('Keeping filters from baseParams:', baseParams.filters);
       params.set('filters', baseParams.filters);
     } else {
+      console.log('Not keeping filters, setting empty');
       params.set('filters', encodeJson([]));
     }
     
     // Handle sorting
     if (keepSort && baseParams?.sort) {
+      console.log('Keeping sort from baseParams:', baseParams.sort);
       params.set('sort', baseParams.sort);
     } else {
+      console.log('Not keeping sort, setting empty');
       params.set('sort', encodeJson([]));
     }
     
@@ -179,11 +195,13 @@ async function doSearch() {
     });
   } else {
     // Default mode: No custom settings, no clean mode
+    console.log('Using default mode - no filters or sorting');
     params.set('filters', encodeJson([]));
     params.set('sort', encodeJson([]));
   }
 
   const url = `https://netflixcare.sprinklr.com/care/knowledge-base?${params.toString()}`;
+  console.log('Generated URL:', url);
   
   if (searchResultBehavior === 'currentTab') {
     chrome.tabs.update({ url });
