@@ -147,6 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Show first-time popup if user hasn't seen it
   if (!hasSeenSavePreferenceIntro) {
+    console.log('Showing first-time popup');
     setTimeout(() => {
       document.getElementById('firstTimePopup').style.display = 'flex';
     }, 500);
@@ -208,14 +209,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // First-time popup event listeners
-  document.getElementById('closePopup').addEventListener('click', async () => {
+  const dismissPopup = async () => {
+    console.log('Dismissing popup');
     document.getElementById('firstTimePopup').style.display = 'none';
     await setSettings({ hasSeenSavePreferenceIntro: true });
+  };
+
+  // Temporary: Add a way to reset and show popup again for testing
+  // (You can remove this later)
+  window.showTestPopup = async () => {
+    await setSettings({ hasSeenSavePreferenceIntro: false });
+    document.getElementById('firstTimePopup').style.display = 'flex';
+  };
+
+  document.getElementById('closePopup').addEventListener('click', dismissPopup);
+  document.getElementById('gotItBtn').addEventListener('click', dismissPopup);
+  
+  // Also allow clicking the overlay background to dismiss
+  document.getElementById('firstTimePopup').addEventListener('click', (e) => {
+    if (e.target.id === 'firstTimePopup') {
+      dismissPopup();
+    }
   });
 
-  document.getElementById('gotItBtn').addEventListener('click', async () => {
-    document.getElementById('firstTimePopup').style.display = 'none';
-    await setSettings({ hasSeenSavePreferenceIntro: true });
+  // Add keyboard escape key listener
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const popup = document.getElementById('firstTimePopup');
+      if (popup.style.display === 'flex') {
+        dismissPopup();
+      }
+    }
   });
 
   // Save preference checkbox event listener
