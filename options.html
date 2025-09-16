@@ -185,6 +185,55 @@
         min-width: 140px;
       }
 
+      .form-group-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .form-labels {
+        display: flex;
+        gap: 20px;
+      }
+
+      .form-label-item {
+        flex: 1;
+      }
+
+      .form-label-item strong {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--fg);
+        margin-bottom: 6px;
+      }
+
+      .form-controls {
+        display: flex;
+        gap: 20px;
+      }
+
+      .form-controls select {
+        flex: 1;
+        background: var(--input-bg);
+        color: var(--fg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 12px 16px;
+        font-size: 14px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .form-controls select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgb(229 9 20 / 0.1);
+      }
+
+      :root[data-theme="dark"] .form-controls select:focus {
+        box-shadow: 0 0 0 3px rgb(255 57 64 / 0.2);
+      }
+
       .action-buttons {
         display: flex;
         gap: 12px;
@@ -379,6 +428,20 @@
           min-width: auto;
         }
 
+        .form-labels {
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .form-controls {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .form-controls select {
+          width: 100%;
+        }
+
         h2 {
           font-size: 24px;
         }
@@ -440,28 +503,27 @@
           <h3 class="section-title">Search Behavior</h3>
           
           <div class="settings-row">
-            <div class="form-group-horizontal">
-              <div class="form-label">
-                <strong>Search Result Behavior</strong>
-                <div class="hint">Controls how search results open when clicking Search.</div>
+            <div class="form-group-grid">
+              <div class="form-labels">
+                <div class="form-label-item">
+                  <strong>Search Result Behavior</strong>
+                  <div class="hint">Controls how search results open when clicking Search.</div>
+                </div>
+                <div class="form-label-item">
+                  <strong>Remember Toggle State</strong>
+                  <div class="hint">Save which toggle was last used (Clean vs Custom Search).</div>
+                </div>
               </div>
-              <select id="searchResultBehavior">
-                <option value="newTab">Open in new tab</option>
-                <option value="currentTab">Open in current tab</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="settings-row">
-            <div class="form-group-horizontal">
-              <div class="form-label">
-                <strong>Remember Toggle State</strong>
-                <div class="hint">Save which toggle was last used (Clean vs Custom Search).</div>
+              <div class="form-controls">
+                <select id="searchResultBehavior">
+                  <option value="newTab">Open in new tab</option>
+                  <option value="currentTab">Open in current tab</option>
+                </select>
+                <select id="rememberToggleState">
+                  <option value="false">Don't remember (always start fresh)</option>
+                  <option value="true">Remember last used toggle</option>
+                </select>
               </div>
-              <select id="rememberToggleState">
-                <option value="false">Don't remember (always start fresh)</option>
-                <option value="true">Remember last used toggle</option>
-              </select>
             </div>
           </div>
         </div>
@@ -471,16 +533,20 @@
           <h3 class="section-title">Appearance</h3>
           
           <div class="settings-row">
-            <div class="form-group-horizontal">
-              <div class="form-label">
-                <strong>Theme</strong>
-                <div class="hint">Controls both the popup and this page.</div>
+            <div class="form-group-grid">
+              <div class="form-labels">
+                <div class="form-label-item">
+                  <strong>Theme</strong>
+                  <div class="hint">Controls both the popup and this page.</div>
+                </div>
               </div>
-              <select id="themeSelect">
-                <option value="system">System</option>
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-              </select>
+              <div class="form-controls">
+                <select id="themeSelect">
+                  <option value="system">System</option>
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
