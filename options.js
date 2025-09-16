@@ -15,7 +15,12 @@ const DEFAULT_SETTINGS = {
   keepSort: false,
   forceShareView: true,
   theme: 'system',
-  searchResultBehavior: 'newTab'
+  searchResultBehavior: 'newTab',
+  rememberToggleState: false,
+  lastToggleState: {
+    clean: false,
+    customDefault: false
+  }
 };
 
 function parseParamsFromUrlStr(urlStr) {
@@ -336,7 +341,7 @@ function updateUrlPreview(urlStr) {
 }
 
 async function restore() {
-  const { baseParams, keepFilters, keepSort, forceShareView, theme, searchResultBehavior } = await getSettings();
+  const { baseParams, keepFilters, keepSort, forceShareView, theme, searchResultBehavior, rememberToggleState } = await getSettings();
   document.getElementById('baseUrl').value = Object.keys(baseParams || {}).length
     ? buildUrlFromParams(baseParams)
     : '';
@@ -345,6 +350,7 @@ async function restore() {
   document.getElementById('forceShareView').checked = !!forceShareView;
 
   document.getElementById('searchResultBehavior').value = searchResultBehavior || 'newTab';
+  document.getElementById('rememberToggleState').value = rememberToggleState ? 'true' : 'false';
   document.getElementById('themeSelect').value = theme || 'system';
   applyTheme(theme);
   
@@ -358,12 +364,13 @@ async function save() {
   const keepSort = document.getElementById('keepSort').checked;
   const forceShareView = document.getElementById('forceShareView').checked;
   const searchResultBehavior = document.getElementById('searchResultBehavior').value;
+  const rememberToggleState = document.getElementById('rememberToggleState').value === 'true';
 
   const baseParams = baseUrl ? parseParamsFromUrlStr(baseUrl) : {};
   // ensure we never persist a 'search' key
   delete baseParams.search;
 
-  await setSettings({ baseParams, keepFilters, keepSort, forceShareView, searchResultBehavior });
+  await setSettings({ baseParams, keepFilters, keepSort, forceShareView, searchResultBehavior, rememberToggleState });
 
   const status = document.getElementById('status');
   status.textContent = 'Settings Saved';
@@ -380,7 +387,12 @@ async function resetDefaults() {
     keepFilters: true,
     keepSort: false,
     forceShareView: true,
-    searchResultBehavior: 'newTab'
+    searchResultBehavior: 'newTab',
+    rememberToggleState: false,
+    lastToggleState: {
+      clean: false,
+      customDefault: false
+    }
   });
   await restore();
   const status = document.getElementById('status');

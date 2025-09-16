@@ -20,7 +20,12 @@ const DEFAULT_SETTINGS = {
   keepSort: false,       // clear sort by default
   forceShareView: true,  // set shareView=1 by default
   theme: 'system',       // 'system' | 'light' | 'dark'
-  searchResultBehavior: 'currentTab'  // 'newTab' | 'currentTab' - changed for debugging
+  searchResultBehavior: 'currentTab',  // 'newTab' | 'currentTab' - changed for debugging
+  rememberToggleState: false,  // whether to remember which toggle was last used
+  lastToggleState: {     // saved state of toggles
+    clean: false,
+    customDefault: false
+  }
 };
 
 function getSettings() {
@@ -56,6 +61,20 @@ function uiSetCustomDefault(on) {
   sw.setAttribute('aria-checked', on ? 'true' : 'false');
 }
 
+async function saveToggleStates() {
+  const { rememberToggleState } = await getSettings();
+  if (rememberToggleState) {
+    const clean = document.getElementById('cleanSwitch').dataset.on === 'true';
+    const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
+    await setSettings({
+      lastToggleState: {
+        clean,
+        customDefault
+      }
+    });
+  }
+}
+
 async function hasCustomDefaults() {
   const { baseParams, keepFilters, keepSort } = await getSettings();
   
@@ -71,12 +90,19 @@ async function hasCustomDefaults() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const { theme } = await getSettings();
+  const { theme, rememberToggleState, lastToggleState } = await getSettings();
   // Don't set the select value - keep it showing "Theme"
   applyTheme(theme);
   
-  
-  // Don't auto-enable custom default - let user manually control toggles
+  // Restore toggle states if remembering is enabled
+  if (rememberToggleState && lastToggleState) {
+    if (lastToggleState.clean) {
+      uiSetClean(true);
+    }
+    if (lastToggleState.customDefault) {
+      uiSetCustomDefault(true);
+    }
+  }
 
   document.getElementById('searchBtn').addEventListener('click', doSearch);
   document.getElementById('searchInput').addEventListener('keydown', (e) => {
@@ -84,32 +110,36 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   const cleanSwitch = document.getElementById('cleanSwitch');
-  cleanSwitch.addEventListener('click', () => {
+  cleanSwitch.addEventListener('click', async () => {
     const on = cleanSwitch.dataset.on !== 'true';
     uiSetClean(on);
     if (on) uiSetCustomDefault(false); // Turn off custom default when clean is on
+    await saveToggleStates();
   });
-  cleanSwitch.addEventListener('keydown', (e) => {
+  cleanSwitch.addEventListener('keydown', async (e) => {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
       const on = cleanSwitch.dataset.on !== 'true';
       uiSetClean(on);
       if (on) uiSetCustomDefault(false); // Turn off custom default when clean is on
+      await saveToggleStates();
     }
   });
 
   const customDefaultSwitch = document.getElementById('customDefaultSwitch');
-  customDefaultSwitch.addEventListener('click', () => {
+  customDefaultSwitch.addEventListener('click', async () => {
     const on = customDefaultSwitch.dataset.on !== 'true';
     uiSetCustomDefault(on);
     if (on) uiSetClean(false); // Turn off clean when custom default is on
+    await saveToggleStates();
   });
-  customDefaultSwitch.addEventListener('keydown', (e) => {
+  customDefaultSwitch.addEventListener('keydown', async (e) => {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
       const on = customDefaultSwitch.dataset.on !== 'true';
       uiSetCustomDefault(on);
       if (on) uiSetClean(false); // Turn off clean when custom default is on
+      await saveToggleStates();
     }
   });
 
