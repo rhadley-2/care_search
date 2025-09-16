@@ -157,10 +157,10 @@ async function doSearch() {
 
   // Simple logic: Clean mode overrides everything
   if (clean) {
-    // Clean mode: Set filters and sorting to empty arrays (like working v1 version)
+    // Clean mode: Set filters and sorting to empty arrays (match V1 encoding: %5B%5D)
     console.log('Using clean mode - setting filters and sorting to empty arrays');
-    params.set('filters', encodeJson([]));
-    params.set('sort', encodeJson([]));
+    params.set('filters', encodeURIComponent(JSON.stringify([])));
+    params.set('sort', encodeURIComponent(JSON.stringify([])));
   } else if (customDefault) {
     // Custom default mode: Use settings from options page
     console.log('Using custom default mode');
@@ -186,10 +186,10 @@ async function doSearch() {
       }
     });
   } else {
-    // Default mode: No custom settings, no clean mode - set empty arrays
+    // Default mode: No custom settings, no clean mode - set empty arrays (match V1 encoding)
     console.log('Using default mode - setting empty filters and sorting');
-    params.set('filters', encodeJson([]));
-    params.set('sort', encodeJson([]));
+    params.set('filters', encodeURIComponent(JSON.stringify([])));
+    params.set('sort', encodeURIComponent(JSON.stringify([])));
   }
 
   const url = `https://netflixcare.sprinklr.com/care/knowledge-base?${params.toString()}`;
