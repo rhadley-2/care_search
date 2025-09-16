@@ -19,10 +19,13 @@
 The NetflixCare Search Extension settings page allows you to customize how the extension behaves when searching the NetflixCare knowledge base. This guide will walk you through each setting and explain how to configure the extension for your specific needs.
 
 **Key Features:**
+- Quick access toggles for unfiltered and custom search modes
+- Remember your preferred search mode across sessions
 - Copy filters and settings from existing NetflixCare ShareView URLs
 - Real-time preview of imported settings
 - Customizable search result behavior (new tab vs current tab)
-- Theme selection (System, Light, Dark)
+- Theme selection (System, Light, Dark) in both popup and settings
+- First-time user introduction popup
 - Responsive design that works on desktop and mobile
 
 ---
@@ -101,7 +104,20 @@ Controls how search results open when you click "Search" in the extension popup.
 - **New tab:** Best for research and comparison, keeps your current work intact
 - **Current tab:** Faster for single searches, reduces tab clutter
 
-**[Screenshot Placeholder: Search Behavior dropdown menu]**
+### Remember Toggle State
+
+This setting allows the extension to remember your preferred search mode (Unfiltered or Custom Search) between sessions.
+
+**Options:**
+- **Disabled (Default):** Extension starts fresh each time
+- **Enabled:** Extension remembers your last toggle choice
+
+**How it works:**
+- When enabled, the extension saves your toggle state when you switch modes
+- The next time you open the extension, your preferred mode is automatically restored
+- Also accessible as a shortcut (💾 icon) in the main popup
+
+**[Screenshot Placeholder: Remember Toggle State dropdown and save icon in popup]**
 
 ---
 
@@ -143,6 +159,7 @@ Controls the visual appearance of both the extension popup and settings page.
 - Keep sort: Unchecked  
 - Force shareView: Checked
 - Search behavior: Open in new tab
+- Remember toggle state: Disabled
 - Theme: System
 
 **[Screenshot Placeholder: Action buttons and confirmation messages]**
@@ -161,11 +178,59 @@ When you first install the extension, it comes configured with these defaults:
 | Keep Sort | Disabled | Allows NetflixCare's default sorting |
 | Force ShareView | Enabled | Ensures URLs work consistently |
 | Search Behavior | New Tab | Preserves your current work |
+| Remember Toggle State | Disabled | Fresh start each session |
 | Theme | System | Matches your computer's preference |
 
 ---
 
-## 8. Common Use Cases
+## 8. Popup Interface Features
+
+The extension popup includes several quick-access features for efficient searching:
+
+### 8.1 Search Modes
+
+**Unfiltered Search Toggle:**
+- **Purpose:** Removes all filters and sorting for broad searches
+- **When to use:** When you need to search across all content without restrictions
+- **Visual indicator:** Green toggle when enabled
+- **Behavior:** Overrides all custom settings and ShareView URL filters
+
+**Custom Search Enabled Toggle:**
+- **Purpose:** Uses your saved ShareView URL settings from the options page
+- **When to use:** When you want to apply your pre-configured filters and settings
+- **Visual indicator:** Green toggle when enabled
+- **Behavior:** Applies filters based on your settings page configuration
+
+**Important:** These toggles are mutually exclusive - enabling one automatically disables the other.
+
+### 8.2 Theme Selection in Popup
+
+You can quickly change themes directly from the popup:
+- **Dropdown location:** Top-right corner next to Settings button
+- **Options:** System, Light, Dark
+- **Synchronization:** Changes are immediately applied to both popup and settings page
+
+### 8.3 Save Preference Shortcut
+
+The 💾 icon provides quick access to the "Remember Toggle State" feature:
+- **Location:** Below the search mode toggles
+- **Function:** Enables/disables remembering your preferred search mode
+- **Visual feedback:** Icon becomes highlighted when active
+- **Tooltip:** Shows explanatory text when hovered
+
+### 8.4 First-Time User Experience
+
+New users see a welcome popup that introduces the save preference feature:
+- **Trigger:** Appears on first use of the extension
+- **Content:** Explains the 💾 icon and Remember Toggle State functionality
+- **Dismissal:** Click "Got it!", close button, overlay, or press Escape
+- **One-time:** Won't appear again after dismissal
+
+**[Screenshot Placeholder: Extension popup showing all toggles, theme selector, and save icon]**
+
+---
+
+## 9. Common Use Cases
 
 ### Use Case 1: Creating a Custom Default Search
 **Scenario:** You frequently search for KB articles in the Billing category.
@@ -192,15 +257,34 @@ When you first install the extension, it comes configured with these defaults:
 **Scenario:** You need to search without your saved filters for one search.
 
 **Steps:**
-1. In the extension popup, toggle "Remove Filters and Sorting"
+1. In the extension popup, enable "Unfiltered Search" toggle
 2. Perform your search
-3. The toggle automatically resets for the next search
+3. Toggle back to your preferred mode for subsequent searches
 
-**[Screenshot Placeholder: Extension popup showing the Remove Filters toggle]**
+### Use Case 4: Consistent Search Mode
+**Scenario:** You always prefer unfiltered searches and want the extension to remember this.
+
+**Steps:**
+1. In the extension popup, enable "Unfiltered Search"
+2. Click the 💾 icon to enable "Remember Toggle State"
+3. The extension will now always start in unfiltered mode
+
+**Result:** Every time you open the extension, "Unfiltered Search" will be pre-enabled.
+
+### Use Case 5: Team Workflow Integration
+**Scenario:** Your team alternates between custom filtered searches and broad unfiltered searches.
+
+**Steps:**
+1. Set up custom ShareView URL in settings for team-specific filters
+2. Use "Custom Search Enabled" toggle for team searches
+3. Use "Unfiltered Search" toggle for broader research
+4. Enable "Remember Toggle State" to maintain your preferred default
+
+**[Screenshot Placeholder: Extension popup showing both search toggles and save preference icon]**
 
 ---
 
-## 9. Troubleshooting
+## 10. Troubleshooting
 
 ### Problem: URL Preview Shows "No settings found"
 **Cause:** The pasted URL doesn't contain NetflixCare filter parameters.
@@ -232,7 +316,30 @@ When you first install the extension, it comes configured with these defaults:
 
 ---
 
-## 10. Best Practices
+### Problem: Search Mode Not Remembered
+**Cause:** "Remember Toggle State" setting is disabled.
+**Solution:**
+- Click the 💾 icon in the popup to enable remembering
+- Or go to Settings → Remember Toggle State → Enable
+- Ensure you've selected your preferred mode before enabling the setting
+
+### Problem: First-Time Popup Keeps Appearing
+**Cause:** Browser storage issues preventing dismissal from saving.
+**Solution:**
+- Clear browser extension data and reconfigure
+- Check Chrome storage permissions for the extension
+- Manually dismiss with "Got it!" button rather than closing browser
+
+### Problem: Toggles Not Working Correctly
+**Cause:** Conflicting settings or corrupted preferences.
+**Solution:**
+- Reset to defaults in the settings page
+- Clear the ShareView URL field if conflicts persist
+- Verify that only one search mode toggle is active at a time
+
+---
+
+## 11. Best Practices
 
 ### URL Management
 - **Test your ShareView URLs** by pasting them and checking the preview
@@ -243,6 +350,8 @@ When you first install the extension, it comes configured with these defaults:
 - **Use specific filters** in your ShareView URL to reduce irrelevant results
 - **Configure search behavior** based on your workflow (new tab vs current tab)
 - **Leverage the preview feature** to understand what filters are active
+- **Enable Remember Toggle State** if you consistently prefer one search mode
+- **Use keyboard shortcuts** (Enter in search field) for faster searching
 
 ### Theme and Accessibility
 - **Use System theme** for automatic light/dark switching
@@ -253,6 +362,14 @@ When you first install the extension, it comes configured with these defaults:
 - **Share your ShareView URLs** with team members for consistency
 - **Document your team's settings** in team wikis or documentation
 - **Regularly review and update** team search configurations
+- **Establish team conventions** for when to use unfiltered vs custom searches
+- **Consider workflow patterns** when deciding whether to enable Remember Toggle State
+
+### User Experience
+- **Take advantage of the first-time popup** to learn about new features
+- **Experiment with different themes** to find your preferred visual style
+- **Use the popup's theme selector** for quick adjustments during different lighting conditions
+- **Utilize tooltip text** on buttons and icons for feature explanations
 
 ---
 
@@ -266,4 +383,4 @@ If you encounter issues not covered in this guide:
 
 ---
 
-*This guide covers NetflixCare Search Extension v1.3. Features and interface may vary in different versions.*
+*This guide covers NetflixCare Search Extension v2.0+. Features include popup toggles, remember toggle state, first-time user experience, and enhanced theme support. Interface may vary in different versions.*
