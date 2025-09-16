@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const cleanSwitch = document.getElementById('cleanSwitch');
   cleanSwitch.addEventListener('click', () => {
     const on = cleanSwitch.dataset.on !== 'true';
-    console.log('Clean switch clicked:', { before: cleanSwitch.dataset.on, after: on });
     uiSetClean(on);
     if (on) uiSetCustomDefault(false); // Turn off custom default when clean is on
   });
@@ -139,15 +138,6 @@ async function doSearch() {
   const clean = document.getElementById('cleanSwitch').dataset.on === 'true';
   const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
 
-  // Debug logging
-  console.log('Search Debug:', {
-    clean,
-    customDefault,
-    keepFilters,
-    keepSort,
-    baseParams
-  });
-
   // Start with base URL parameters
   const params = new URLSearchParams();
   
@@ -157,27 +147,21 @@ async function doSearch() {
 
   // Simple logic: Clean mode overrides everything
   if (clean) {
-    // Clean mode: Set filters and sorting to empty arrays (match V1 encoding: %5B%5D)
-    console.log('Using clean mode - setting filters and sorting to empty arrays');
+    // Clean mode: Set filters and sorting to empty arrays
     params.set('filters', encodeURIComponent(JSON.stringify([])));
     params.set('sort', encodeURIComponent(JSON.stringify([])));
   } else if (customDefault) {
     // Custom default mode: Use settings from options page
-    console.log('Using custom default mode');
     
     // Handle filters
     if (keepFilters && baseParams?.filters) {
-      console.log('Keeping filters from baseParams:', baseParams.filters);
       params.set('filters', baseParams.filters);
     }
-    // If not keeping filters, don't add the parameter at all
     
     // Handle sorting
     if (keepSort && baseParams?.sort) {
-      console.log('Keeping sort from baseParams:', baseParams.sort);
       params.set('sort', baseParams.sort);
     }
-    // If not keeping sort, don't add the parameter at all
     
     // Add other parameters from baseParams (excluding search, filters, sort)
     Object.entries(baseParams || {}).forEach(([key, value]) => {
@@ -186,14 +170,12 @@ async function doSearch() {
       }
     });
   } else {
-    // Default mode: No custom settings, no clean mode - set empty arrays (match V1 encoding)
-    console.log('Using default mode - setting empty filters and sorting');
+    // Default mode: No custom settings, no clean mode - set empty arrays
     params.set('filters', encodeURIComponent(JSON.stringify([])));
     params.set('sort', encodeURIComponent(JSON.stringify([])));
   }
 
   const url = `https://netflixcare.sprinklr.com/care/knowledge-base?${params.toString()}`;
-  console.log('Generated URL:', url);
   
   if (searchResultBehavior === 'currentTab') {
     chrome.tabs.update({ url });
