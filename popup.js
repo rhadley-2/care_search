@@ -252,6 +252,9 @@ async function doSearch() {
     // Handle sorting
     if (keepSort && baseParams?.sort) {
       params.set('sort', baseParams.sort);
+    } else {
+      // When keepSort is false, explicitly set empty sort to clear any existing sort
+      params.set('sort', encodeURIComponent(JSON.stringify([])));
     }
     
     // Add other parameters from baseParams (excluding search, filters, sort)
