@@ -76,11 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   applyTheme(theme);
   
   
-  // Auto-enable custom default if user has custom settings
-  const hasCustom = await hasCustomDefaults();
-  if (hasCustom) {
-    uiSetCustomDefault(true);
-  }
+  // Don't auto-enable custom default - let user manually control toggles
 
   document.getElementById('searchBtn').addEventListener('click', doSearch);
   document.getElementById('searchInput').addEventListener('keydown', (e) => {
