@@ -161,9 +161,10 @@ async function doSearch() {
 
   // Simple logic: Clean mode overrides everything
   if (clean) {
-    // Clean mode: Completely remove filters and sorting parameters
-    console.log('Using clean mode - completely removing filters and sorting parameters');
-    // Don't add filters or sort parameters at all
+    // Clean mode: Set filters and sorting to empty arrays (like working v1 version)
+    console.log('Using clean mode - setting filters and sorting to empty arrays');
+    params.set('filters', encodeJson([]));
+    params.set('sort', encodeJson([]));
   } else if (customDefault) {
     // Custom default mode: Use settings from options page
     console.log('Using custom default mode');
@@ -189,9 +190,10 @@ async function doSearch() {
       }
     });
   } else {
-    // Default mode: No custom settings, no clean mode
-    console.log('Using default mode - no filters or sorting parameters');
-    // Don't add filters or sort parameters at all
+    // Default mode: No custom settings, no clean mode - set empty arrays
+    console.log('Using default mode - setting empty filters and sorting');
+    params.set('filters', encodeJson([]));
+    params.set('sort', encodeJson([]));
   }
 
   const url = `https://netflixcare.sprinklr.com/care/knowledge-base?${params.toString()}`;
