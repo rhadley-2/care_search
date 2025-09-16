@@ -26,8 +26,7 @@ const DEFAULT_SETTINGS = {
     clean: false,
     customDefault: false
   },
-  hasSeenSavePreferenceIntro: false,  // whether user has seen the first-time popup
-  saveSearchPreference: false  // whether save preference checkbox is checked
+  hasSeenSavePreferenceIntro: false  // whether user has seen the first-time popup
 };
 
 function getSettings() {
@@ -77,41 +76,6 @@ async function saveToggleStates() {
   }
 }
 
-async function saveCurrentSearchSettings() {
-  // This function would capture current page's search settings
-  // For now, we'll show a simple notification that preferences would be saved
-  // In a real implementation, this would extract current filters/sort from the active tab
-  
-  // Get the currently active tab's URL to extract search parameters
-  try {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (tab && tab.url && tab.url.includes('netflixcare.sprinklr.com/care/knowledge-base')) {
-      const url = new URL(tab.url);
-      const params = {};
-      
-      // Extract relevant search parameters
-      if (url.searchParams.get('filters')) {
-        params.filters = url.searchParams.get('filters');
-      }
-      if (url.searchParams.get('sort')) {
-        params.sort = url.searchParams.get('sort');
-      }
-      
-      // Save these as base parameters
-      const currentSettings = await getSettings();
-      await setSettings({
-        baseParams: {
-          ...currentSettings.baseParams,
-          ...params
-        }
-      });
-      
-      console.log('Search preferences saved from current tab');
-    }
-  } catch (error) {
-    console.log('Could not save search preferences:', error);
-  }
-}
 
 async function hasCustomDefaults() {
   const { baseParams, keepFilters, keepSort } = await getSettings();
@@ -128,7 +92,7 @@ async function hasCustomDefaults() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const { theme, rememberToggleState, lastToggleState, hasSeenSavePreferenceIntro, saveSearchPreference } = await getSettings();
+  const { theme, rememberToggleState, lastToggleState, hasSeenSavePreferenceIntro } = await getSettings();
   // Don't set the select value - keep it showing "Theme"
   applyTheme(theme);
   
@@ -142,8 +106,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Restore save preference checkbox state
-  document.getElementById('saveSearchPreference').checked = saveSearchPreference;
+  // Restore remember toggle state checkbox
+  document.getElementById('rememberToggleState').checked = rememberToggleState;
 
   // Show first-time popup if user hasn't seen it
   if (!hasSeenSavePreferenceIntro) {
@@ -242,16 +206,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Save preference checkbox event listener
-  document.getElementById('saveSearchPreference').addEventListener('change', async (e) => {
-    await setSettings({ saveSearchPreference: e.target.checked });
+  // Remember toggle state checkbox event listener
+  document.getElementById('rememberToggleState').addEventListener('change', async (e) => {
+    const rememberToggleState = e.target.checked;
+    await setSettings({ rememberToggleState });
     
-    if (e.target.checked) {
-      // If checkbox is checked and custom search is enabled, save current search settings
-      const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
-      if (customDefault) {
-        await saveCurrentSearchSettings();
-      }
+    if (rememberToggleState) {
+      // If checkbox is checked, immediately save current toggle states
+      await saveToggleStates();
+      console.log('Toggle state remembering enabled and current states saved');
+    } else {
+      console.log('Toggle state remembering disabled');
     }
   });
 });

@@ -135,7 +135,8 @@
       .save-preference-container {
         display: flex;
         align-items: center;
-        margin-left: 4px;
+        justify-content: center;
+        margin-top: 8px;
       }
 
       .save-checkbox {
@@ -341,10 +342,10 @@
           <div id="customDefaultSwitch" class="switch" role="switch" aria-checked="false" tabindex="0">
             <div class="thumb"></div>
           </div>
-          <div class="save-preference-container">
-            <input type="checkbox" id="saveSearchPreference" class="save-checkbox" title="Save your search settings automatically when using Custom Search">
-            <label for="saveSearchPreference" class="save-label" title="Save your search settings automatically when using Custom Search">💾</label>
-          </div>
+        </div>
+        <div class="save-preference-container">
+          <input type="checkbox" id="rememberToggleState" class="save-checkbox" title="Remember your preferred search mode (Clean or Custom Search)">
+          <label for="rememberToggleState" class="save-label" title="Remember your preferred search mode (Clean or Custom Search)">💾</label>
         </div>
       </div>
 
@@ -360,9 +361,9 @@
           <button id="closePopup" class="close-btn">×</button>
         </div>
         <div class="popup-body">
-          <p><strong>New Feature:</strong> Save your search preferences!</p>
-          <p>When you enable <strong>Custom Search</strong>, you can now click the 💾 icon to automatically save your current search settings (filters, sorting, etc.) for future use.</p>
-          <p>This makes it easy to reuse your preferred search configuration without having to set it up each time.</p>
+          <p><strong>New Feature:</strong> Remember your search mode!</p>
+          <p>Click the 💾 icon to remember your preferred search mode (Clean or Custom Search). The extension will restore your last choice when you reopen it.</p>
+          <p>This is a shortcut to the "Remember Toggle State" setting in the options page.</p>
         </div>
         <div class="popup-footer">
           <button id="gotItBtn" class="btn">Got it!</button>
