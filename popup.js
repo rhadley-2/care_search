@@ -142,55 +142,45 @@ async function doSearch() {
   const clean = document.getElementById('cleanSwitch').dataset.on === 'true';
   const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
 
-  // Required params
+  // Start with base URL parameters
   const params = new URLSearchParams();
+  
+  // Always set required parameters
   params.set('search', encodeURIComponent(input));
   if (forceShareView) params.set('shareView', '1');
 
-  // Handle filters and sort based on mode
+  // Simple logic: Clean mode overrides everything
   if (clean) {
-    // Clean mode: remove all filters and sorting
+    // Clean mode: No filters, no sorting
     params.set('filters', encodeJson([]));
     params.set('sort', encodeJson([]));
+  } else if (customDefault) {
+    // Custom default mode: Use settings from options page
     
-    // Still add other baseParams (excluding filters and sort)
-    Object.entries(baseParams || {}).forEach(([k, v]) => {
-      if (k.toLowerCase() !== 'search' && k !== 'filters' && k !== 'sort') {
-        params.set(k, v);
+    // Handle filters
+    if (keepFilters && baseParams?.filters) {
+      params.set('filters', baseParams.filters);
+    } else {
+      params.set('filters', encodeJson([]));
+    }
+    
+    // Handle sorting
+    if (keepSort && baseParams?.sort) {
+      params.set('sort', baseParams.sort);
+    } else {
+      params.set('sort', encodeJson([]));
+    }
+    
+    // Add other parameters from baseParams (excluding search, filters, sort)
+    Object.entries(baseParams || {}).forEach(([key, value]) => {
+      if (!['search', 'filters', 'sort'].includes(key)) {
+        params.set(key, value);
       }
     });
   } else {
-    // Start with user base params (typically contains filters for locale)
-    Object.entries(baseParams || {}).forEach(([k, v]) => {
-      if (k.toLowerCase() !== 'search') params.set(k, v);
-    });
-
-    // Apply filtering logic for non-clean mode
-    if (customDefault && keepFilters) {
-      // Use custom filters from baseParams if available
-      if (!params.has('filters')) {
-        params.set('filters', buildLocaleFilter(['en_US']));
-      }
-    } else if (customDefault) {
-      // Custom default is on but keepFilters is false - use baseParams filters or default
-      if (!params.has('filters')) {
-        params.set('filters', buildLocaleFilter(['en_US']));
-      }
-    } else {
-      // Neither clean nor custom default - remove filters
-      params.set('filters', encodeJson([]));
-    }
-
-    // Apply sort logic for non-clean mode
-    if (customDefault && keepSort) {
-      // Keep sort from baseParams if available
-      if (!params.has('sort')) {
-        params.set('sort', encodeJson([]));
-      }
-    } else {
-      // Either not custom default or keepSort is false - remove sorting
-      params.set('sort', encodeJson([]));
-    }
+    // Default mode: No custom settings, no clean mode
+    params.set('filters', encodeJson([]));
+    params.set('sort', encodeJson([]));
   }
 
   const url = `https://netflixcare.sprinklr.com/care/knowledge-base?${params.toString()}`;
