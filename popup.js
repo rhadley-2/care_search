@@ -20,7 +20,7 @@ const DEFAULT_SETTINGS = {
   keepSort: false,       // clear sort by default
   forceShareView: true,  // set shareView=1 by default
   theme: 'system',       // 'system' | 'light' | 'dark'
-  searchResultBehavior: 'newTab'  // 'newTab' | 'currentTab'
+  searchResultBehavior: 'currentTab'  // 'newTab' | 'currentTab' - changed for debugging
 };
 
 function getSettings() {
