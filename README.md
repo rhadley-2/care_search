@@ -7,7 +7,7 @@ A Chrome extension for enhanced NetflixCare knowledge base searching with custom
 ### 🔍 Enhanced Search
 - **Custom Encoding**: Properly encodes search parameters to prevent display of encoded characters
 - **Flexible Search Results**: Choose to open results in a new tab or current tab
-- **Clean Search Option**: Toggle to remove all filters and sorting for a single search
+- **Unfiltered Search Option**: Toggle to remove all filters and sorting for a single search
 - **Real-time URL Preview**: Live preview of filters and settings when pasting ShareView URLs
 - **Human-friendly Display**: Technical database fields shown with readable names (e.g., "Status: Published" instead of "KB_CONTENT_STATUS (IN): PUBLISHED")
 

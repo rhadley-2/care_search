@@ -23,7 +23,7 @@ const DEFAULT_SETTINGS = {
   searchResultBehavior: 'currentTab',  // 'newTab' | 'currentTab' - changed for debugging
   rememberToggleState: false,  // whether to remember which toggle was last used
   lastToggleState: {     // saved state of toggles
-    clean: false,
+    unfiltered: false,
     customDefault: false
   },
   hasSeenSavePreferenceIntro: false  // whether user has seen the first-time popup
@@ -50,8 +50,8 @@ function applyTheme(theme) {
 }
 
 
-function uiSetClean(on) {
-  const sw = document.getElementById('cleanSwitch');
+function uiSetUnfiltered(on) {
+  const sw = document.getElementById('unfilteredSwitch');
   sw.dataset.on = on ? 'true' : 'false';
   sw.setAttribute('aria-checked', on ? 'true' : 'false');
 }
@@ -65,11 +65,11 @@ function uiSetCustomDefault(on) {
 async function saveToggleStates() {
   const { rememberToggleState } = await getSettings();
   if (rememberToggleState) {
-    const clean = document.getElementById('cleanSwitch').dataset.on === 'true';
+    const unfiltered = document.getElementById('unfilteredSwitch').dataset.on === 'true';
     const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
     await setSettings({
       lastToggleState: {
-        clean,
+        unfiltered,
         customDefault
       }
     });
@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Restore toggle states if remembering is enabled
   if (rememberToggleState && lastToggleState) {
-    if (lastToggleState.clean) {
-      uiSetClean(true);
+    if (lastToggleState.unfiltered) {
+      uiSetUnfiltered(true);
     }
     if (lastToggleState.customDefault) {
       uiSetCustomDefault(true);
@@ -122,19 +122,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (e.key === 'Enter') doSearch();
   });
 
-  const cleanSwitch = document.getElementById('cleanSwitch');
-  cleanSwitch.addEventListener('click', async () => {
-    const on = cleanSwitch.dataset.on !== 'true';
-    uiSetClean(on);
-    if (on) uiSetCustomDefault(false); // Turn off custom default when clean is on
+  const unfilteredSwitch = document.getElementById('unfilteredSwitch');
+  unfilteredSwitch.addEventListener('click', async () => {
+    const on = unfilteredSwitch.dataset.on !== 'true';
+    uiSetUnfiltered(on);
+    if (on) uiSetCustomDefault(false); // Turn off custom default when unfiltered is on
     await saveToggleStates();
   });
-  cleanSwitch.addEventListener('keydown', async (e) => {
+  unfilteredSwitch.addEventListener('keydown', async (e) => {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
-      const on = cleanSwitch.dataset.on !== 'true';
-      uiSetClean(on);
-      if (on) uiSetCustomDefault(false); // Turn off custom default when clean is on
+      const on = unfilteredSwitch.dataset.on !== 'true';
+      uiSetUnfiltered(on);
+      if (on) uiSetCustomDefault(false); // Turn off custom default when unfiltered is on
       await saveToggleStates();
     }
   });
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   customDefaultSwitch.addEventListener('click', async () => {
     const on = customDefaultSwitch.dataset.on !== 'true';
     uiSetCustomDefault(on);
-    if (on) uiSetClean(false); // Turn off clean when custom default is on
+    if (on) uiSetUnfiltered(false); // Turn off unfiltered when custom default is on
     await saveToggleStates();
   });
   customDefaultSwitch.addEventListener('keydown', async (e) => {
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       const on = customDefaultSwitch.dataset.on !== 'true';
       uiSetCustomDefault(on);
-      if (on) uiSetClean(false); // Turn off clean when custom default is on
+      if (on) uiSetUnfiltered(false); // Turn off unfiltered when custom default is on
       await saveToggleStates();
     }
   });
@@ -226,7 +226,7 @@ async function doSearch() {
   if (!input) return;
 
   const { baseParams, keepFilters, keepSort, forceShareView, searchResultBehavior } = await getSettings();
-  const clean = document.getElementById('cleanSwitch').dataset.on === 'true';
+  const unfiltered = document.getElementById('unfilteredSwitch').dataset.on === 'true';
   const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
 
   // Start with base URL parameters
@@ -236,9 +236,9 @@ async function doSearch() {
   params.set('search', encodeURIComponent(input));
   if (forceShareView) params.set('shareView', '1');
 
-  // Simple logic: Clean mode overrides everything
-  if (clean) {
-    // Clean mode: Set filters and sorting to empty arrays
+  // Simple logic: Unfiltered mode overrides everything
+  if (unfiltered) {
+    // Unfiltered mode: Set filters and sorting to empty arrays
     params.set('filters', encodeURIComponent(JSON.stringify([])));
     params.set('sort', encodeURIComponent(JSON.stringify([])));
   } else if (customDefault) {
@@ -261,7 +261,7 @@ async function doSearch() {
       }
     });
   } else {
-    // Default mode: No custom settings, no clean mode - set empty arrays
+    // Default mode: No custom settings, no unfiltered mode - set empty arrays
     params.set('filters', encodeURIComponent(JSON.stringify([])));
     params.set('sort', encodeURIComponent(JSON.stringify([])));
   }

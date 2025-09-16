@@ -18,7 +18,7 @@ const DEFAULT_SETTINGS = {
   searchResultBehavior: 'newTab',
   rememberToggleState: false,
   lastToggleState: {
-    clean: false,
+    unfiltered: false,
     customDefault: false
   }
 };
@@ -390,7 +390,7 @@ async function resetDefaults() {
     searchResultBehavior: 'newTab',
     rememberToggleState: false,
     lastToggleState: {
-      clean: false,
+      unfiltered: false,
       customDefault: false
     }
   });
