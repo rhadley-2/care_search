@@ -278,7 +278,16 @@
         border-color: var(--accent);
       }
 
+      .button-container {
+        position: relative;
+        display: inline-block;
+      }
+
       .status-message {
+        position: absolute;
+        top: -45px;
+        left: 50%;
+        transform: translateX(-50%);
         padding: 8px 12px;
         border-radius: var(--radius-sm);
         font-size: 13px;
@@ -287,6 +296,8 @@
         color: white;
         opacity: 0;
         transition: opacity 0.2s;
+        white-space: nowrap;
+        z-index: 10;
       }
 
       .status-message.show {
@@ -415,6 +426,14 @@
 
         .btn {
           width: 100%;
+        }
+
+        .button-container {
+          width: 100%;
+        }
+
+        .status-message {
+          top: -50px;
         }
 
         .form-group-horizontal {
@@ -554,9 +573,11 @@
 
       <!-- Centered Action Buttons -->
       <div class="centered-actions">
-        <button id="saveBtn" class="btn">Save Settings</button>
+        <div class="button-container">
+          <span id="status" class="status-message"></span>
+          <button id="saveBtn" class="btn">Save Settings</button>
+        </div>
         <button id="resetDefaults" class="btn secondary">Reset to Default</button>
-        <span id="status" class="status-message"></span>
       </div>
     </div>
 
