@@ -211,6 +211,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const rememberToggleState = e.target.checked;
     await setSettings({ rememberToggleState });
     
+    // Show save message
+    showSaveMessage();
+    
     if (rememberToggleState) {
       // If checkbox is checked, immediately save current toggle states
       await saveToggleStates();
@@ -220,6 +223,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 });
+
+function showSaveMessage() {
+  const messageEl = document.getElementById('saveMessage');
+  messageEl.classList.add('show');
+  
+  // Hide message after 2 seconds
+  setTimeout(() => {
+    messageEl.classList.remove('show');
+  }, 2000);
+}
 
 async function doSearch() {
   const input = document.getElementById('searchInput').value.trim();
