@@ -20,7 +20,8 @@ const DEFAULT_SETTINGS = {
   lastToggleState: {
     unfiltered: false,
     customDefault: false
-  }
+  },
+  individualFilters: {} // Store individual filter preferences by filter signature
 };
 
 function parseParamsFromUrlStr(urlStr) {
@@ -410,6 +411,118 @@ async function onThemeChange(e) {
   applyTheme(theme);
 }
 
+// Generate a stable signature for a filter to use as a key
+function generateFilterSignature(filter) {
+  const field = filter.field || '';
+  const type = filter.filterType || '';
+  const values = Array.isArray(filter.values) ? filter.values.sort().join('|') : (filter.values || '');
+  return `${field}:${type}:${values}`;
+}
+
+// Update individual filter controls based on ShareView URL
+async function updateIndividualFilters(urlStr) {
+  const container = document.getElementById('individualFilters');
+  
+  if (!urlStr.trim()) {
+    container.innerHTML = `
+      <div class="no-filters-message">
+        Paste a ShareView URL above to see individual filter controls
+      </div>
+    `;
+    return;
+  }
+
+  try {
+    const params = parseParamsFromUrlStr(urlStr);
+    const { individualFilters = {} } = await getSettings();
+    const filterList = [];
+    
+    // Parse filters
+    if (params.filters) {
+      try {
+        const decodedFilters = JSON.parse(decodeURIComponent(decodeURIComponent(params.filters)));
+        if (Array.isArray(decodedFilters)) {
+          decodedFilters.forEach(filter => {
+            // Skip locale filters for now - they're usually required
+            if (filter.field === 'KB_LOCALE') return;
+            
+            const signature = generateFilterSignature(filter);
+            const isEnabled = individualFilters[signature] !== false; // Default to enabled
+            
+            let values = filter.values || [];
+            
+            // Special handling for folder/category IDs
+            if (filter.field === 'KB_FOLDER_ID' && Array.isArray(values)) {
+              values = values.map(v => FOLDER_NAMES[v] || `Category ${v}`);
+            }
+            
+            filterList.push({
+              signature,
+              field: humanizeFieldName(filter.field || 'Unknown'),
+              type: humanizeFilterType(filter.filterType || 'Unknown'),
+              values: Array.isArray(values) ? values.join(', ') : (values || ''),
+              enabled: isEnabled,
+              rawFilter: filter
+            });
+          });
+        }
+      } catch (e) {
+        console.warn('Error parsing filters for individual control:', e);
+      }
+    }
+
+    // Render filter controls
+    if (filterList.length === 0) {
+      container.innerHTML = `
+        <div class="no-filters-message">
+          No individual filters found in this URL (locale filters are always included)
+        </div>
+      `;
+    } else {
+      container.innerHTML = filterList.map(filter => `
+        <div class="filter-item">
+          <div class="filter-info">
+            <div class="filter-name">${filter.field}</div>
+            <div class="filter-details">${filter.type}: ${filter.values}</div>
+          </div>
+          <div class="filter-toggle">
+            <label>
+              <input type="checkbox" class="filter-checkbox" 
+                     data-signature="${filter.signature}" 
+                     ${filter.enabled ? 'checked' : ''}>
+              <span>Enable</span>
+            </label>
+          </div>
+        </div>
+      `).join('');
+
+      // Add event listeners for filter toggles
+      const checkboxes = container.querySelectorAll('.filter-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', async (e) => {
+          const signature = e.target.dataset.signature;
+          const { individualFilters = {} } = await getSettings();
+          
+          if (e.target.checked) {
+            delete individualFilters[signature]; // Remove entry = default enabled
+          } else {
+            individualFilters[signature] = false; // Explicitly disabled
+          }
+          
+          await setSettings({ individualFilters });
+        });
+      });
+    }
+  } catch (e) {
+    console.warn('Error updating individual filters:', e);
+    container.innerHTML = `
+      <div class="no-filters-message">
+        Error parsing URL for individual filter controls
+      </div>
+    `;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   // Apply theme immediately on load
   const { theme } = await getSettings();
@@ -423,6 +536,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const baseUrlInput = document.getElementById('baseUrl');
   baseUrlInput.addEventListener('input', (e) => {
     updateUrlPreview(e.target.value);
+    updateIndividualFilters(e.target.value);
+  });
+
+  // Add collapsible section functionality
+  const advancedFilterHeader = document.getElementById('advancedFilterHeader');
+  advancedFilterHeader.addEventListener('click', () => {
+    const section = document.getElementById('advancedFilterControl');
+    section.classList.toggle('expanded');
   });
 });
 document.getElementById('saveBtn').addEventListener('click', save);

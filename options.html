@@ -410,6 +410,109 @@
         }
       }
 
+      /* Collapsible section styles */
+      .collapsible-section {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        margin-top: 16px;
+        overflow: hidden;
+      }
+
+      .collapsible-header {
+        background: var(--input-bg);
+        padding: 12px 16px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        color: var(--fg);
+        user-select: none;
+        transition: background-color 0.2s;
+      }
+
+      .collapsible-header:hover {
+        background: var(--border);
+      }
+
+      .collapsible-arrow {
+        transition: transform 0.2s;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .collapsible-section.expanded .collapsible-arrow {
+        transform: rotate(180deg);
+      }
+
+      .collapsible-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .collapsible-section.expanded .collapsible-content {
+        max-height: 1000px;
+      }
+
+      .collapsible-inner {
+        padding: 16px;
+        background: var(--card-bg);
+      }
+
+      /* Individual filter control styles */
+      .filter-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .filter-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--input-bg);
+      }
+
+      .filter-info {
+        flex: 1;
+        margin-right: 12px;
+      }
+
+      .filter-name {
+        font-weight: 500;
+        color: var(--fg);
+        font-size: 13px;
+      }
+
+      .filter-details {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      .filter-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .filter-checkbox {
+        transform: scale(1.1);
+      }
+
+      .no-filters-message {
+        padding: 16px;
+        text-align: center;
+        color: var(--muted);
+        font-style: italic;
+        background: var(--input-bg);
+        border-radius: var(--radius-sm);
+      }
+
       @media (max-width: 640px) {
         .container {
           padding: 16px;
@@ -469,6 +572,20 @@
         .centered-actions {
           justify-content: stretch;
         }
+
+        .filter-item {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 8px;
+        }
+
+        .filter-info {
+          margin-right: 0;
+        }
+
+        .filter-toggle {
+          justify-content: flex-start;
+        }
       }
     </style>
   </head>
@@ -511,6 +628,26 @@
           </div>
           <div class="hint">
             If you uncheck "Keep filters," we'll clear filters unless you toggle "Remove Filters and Sorting" only for a single search in the popup.
+          </div>
+        </div>
+
+        <!-- Advanced Filter Control Section -->
+        <div class="collapsible-section" id="advancedFilterControl">
+          <div class="collapsible-header" id="advancedFilterHeader">
+            <span>Advanced Filter Control</span>
+            <span class="collapsible-arrow">▼</span>
+          </div>
+          <div class="collapsible-content">
+            <div class="collapsible-inner">
+              <div class="hint" style="margin-bottom: 16px;">
+                Enable or disable individual filters from your ShareView URL. Only enabled filters will be applied when using Custom Search mode.
+              </div>
+              <div id="individualFilters" class="filter-list">
+                <div class="no-filters-message">
+                  Paste a ShareView URL above to see individual filter controls
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -242,11 +242,48 @@ function showSaveMessage(isLocked) {
   }, 2000);
 }
 
+// Generate a stable signature for a filter to use as a key (matches options.js)
+function generateFilterSignature(filter) {
+  const field = filter.field || '';
+  const type = filter.filterType || '';
+  const values = Array.isArray(filter.values) ? filter.values.sort().join('|') : (filter.values || '');
+  return `${field}:${type}:${values}`;
+}
+
+// Filter baseParams based on individual filter preferences
+function applyIndividualFilterPreferences(baseParams, individualFilters) {
+  if (!baseParams?.filters || !individualFilters) return baseParams;
+  
+  try {
+    // Decode filters from baseParams
+    const decodedFilters = JSON.parse(decodeURIComponent(decodeURIComponent(baseParams.filters)));
+    if (!Array.isArray(decodedFilters)) return baseParams;
+    
+    // Filter out disabled filters
+    const enabledFilters = decodedFilters.filter(filter => {
+      // Always keep locale filters
+      if (filter.field === 'KB_LOCALE') return true;
+      
+      // Check individual preference
+      const signature = generateFilterSignature(filter);
+      return individualFilters[signature] !== false; // Default to enabled
+    });
+    
+    // Re-encode filtered list
+    const filteredParams = { ...baseParams };
+    filteredParams.filters = encodeURIComponent(JSON.stringify(enabledFilters));
+    return filteredParams;
+  } catch (e) {
+    console.warn('Error applying individual filter preferences:', e);
+    return baseParams; // Fall back to original if parsing fails
+  }
+}
+
 async function doSearch() {
   const input = document.getElementById('searchInput').value.trim();
   if (!input) return;
 
-  const { baseParams, keepFilters, keepSort, forceShareView, searchResultBehavior } = await getSettings();
+  const { baseParams, keepFilters, keepSort, forceShareView, searchResultBehavior, individualFilters = {} } = await getSettings();
   const unfiltered = document.getElementById('unfilteredSwitch').dataset.on === 'true';
   const customDefault = document.getElementById('customDefaultSwitch').dataset.on === 'true';
 
@@ -264,10 +301,12 @@ async function doSearch() {
     params.set('sort', encodeURIComponent(JSON.stringify([])));
   } else if (customDefault) {
     // Custom default mode: Use settings from options page
+    // Apply individual filter preferences if they exist
+    const filteredParams = applyIndividualFilterPreferences(baseParams, individualFilters);
     
     // Handle filters
-    if (keepFilters && baseParams?.filters) {
-      params.set('filters', baseParams.filters);
+    if (keepFilters && filteredParams?.filters) {
+      params.set('filters', filteredParams.filters);
     }
     
     // Handle sorting
