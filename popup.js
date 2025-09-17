@@ -106,8 +106,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Restore remember toggle state checkbox
+  // Restore remember toggle state checkbox and update icon
   document.getElementById('rememberToggleState').checked = rememberToggleState;
+  updatePadlockIcon(rememberToggleState);
 
   // Show first-time popup if user hasn't seen it
   if (!hasSeenSavePreferenceIntro) {
@@ -211,8 +212,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const rememberToggleState = e.target.checked;
     await setSettings({ rememberToggleState });
     
-    // Show save message
-    showSaveMessage();
+    // Update icon and show message based on new state
+    updatePadlockIcon(rememberToggleState);
+    showSaveMessage(rememberToggleState);
     
     if (rememberToggleState) {
       // If checkbox is checked, immediately save current toggle states
@@ -224,8 +226,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
-function showSaveMessage() {
+function updatePadlockIcon(isLocked) {
+  const iconEl = document.getElementById('padlockIcon');
+  iconEl.textContent = isLocked ? '🔐' : '🔓';
+}
+
+function showSaveMessage(isLocked) {
   const messageEl = document.getElementById('saveMessage');
+  messageEl.textContent = isLocked ? 'Search mode locked' : 'Search mode unlocked';
   messageEl.classList.add('show');
   
   // Hide message after 2 seconds
