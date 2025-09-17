@@ -112,7 +112,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Show first-time popup if user hasn't seen it
   if (!hasSeenSavePreferenceIntro) {
-    console.log('Showing first-time popup');
     setTimeout(() => {
       document.getElementById('firstTimePopup').style.display = 'flex';
     }, 500);
@@ -175,7 +174,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // First-time popup event listeners
   const dismissPopup = async () => {
-    console.log('Dismissing popup');
     document.getElementById('firstTimePopup').style.display = 'none';
     await setSettings({ hasSeenSavePreferenceIntro: true });
   };
@@ -219,9 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (rememberToggleState) {
       // If checkbox is checked, immediately save current toggle states
       await saveToggleStates();
-      console.log('Toggle state remembering enabled and current states saved');
     } else {
-      console.log('Toggle state remembering disabled');
     }
   });
 });
